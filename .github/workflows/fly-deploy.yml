@@ -46,7 +46,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/financeapp:latest .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/financeapp:latest -f src/FinanceApp.WebApi/Dockerfile .
         docker push ${{ secrets.DOCKER_USERNAME }}/financeapp:latest
 
   deploy:
