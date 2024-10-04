@@ -1,4 +1,4 @@
-app = 'financeapp'
+app = 'financeapp.api'
 primary_region = 'lhr'
 
 [build]
