@@ -1,7 +1,7 @@
-namespace FinanceApp.Application.Repositories;
+namespace FinanceApp.Application.Interfaces.Repositories;
 
 public interface IUnitOfWork : IDisposable
 {
-    IAsyncRepository<TEntity> Repository<TEntity>() where TEntity : class;
+    IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class;
     Task<int> Complete();
 }
