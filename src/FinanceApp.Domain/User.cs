@@ -4,6 +4,6 @@ namespace FinanceApp.Domain;
 
 public class User : IdentityUser
 {
-    public string? Nombre { get; set; }
-    public string? Apellido { get; set; }
+    public string? Name { get; set; }
+    public string? Lastname { get; set; }
 }
