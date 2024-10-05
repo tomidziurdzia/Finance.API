@@ -1,6 +1,3 @@
 namespace FinanceApp.Application.Exceptions;
 
-public class BadRequestException
-{
-    
-}
+public abstract class BadRequestException(string message) : ApplicationException(message);
