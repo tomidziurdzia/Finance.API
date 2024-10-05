@@ -15,10 +15,7 @@ public class InitialData
     ){
         try
         {
-            // Cargar los usuarios de forma asíncrona
-            var users = await userManager.Users.ToListAsync();
-
-            if (!users.Any())
+            if(!userManager.Users.Any())
             {
                 var user = new User
                 {
