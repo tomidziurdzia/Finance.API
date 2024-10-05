@@ -16,6 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseSupabase"), 
+        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
+);
+
 // Add services to the container.
 builder.Services.AddControllers(opt => 
 {
@@ -23,16 +28,14 @@ builder.Services.AddControllers(opt =>
     opt.Filters.Add(new AuthorizeFilter(policy));
 });
 
-builder.Services.TryAddSingleton<TimeProvider>(TimeProvider.System);
-
 IdentityBuilder identityBuilder = builder.Services.AddIdentityCore<User>();
-
 identityBuilder = new IdentityBuilder(identityBuilder.UserType, identityBuilder.Services);
 identityBuilder.AddRoles<IdentityRole>().AddDefaultTokenProviders();
 identityBuilder.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User, IdentityRole>>();
 identityBuilder.AddEntityFrameworkStores<ApplicationDbContext>();
 identityBuilder.AddSignInManager<SignInManager<User>>();
-builder.Services.TryAddSingleton(TimeProvider.System);
+
+builder.Services.TryAddSingleton<TimeProvider>(TimeProvider.System);
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
@@ -46,17 +49,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
-    )
-);
-
-
 builder.Services.AddCors(options => 
 {
-    options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    options.AddPolicy("CorsPolicy", b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
