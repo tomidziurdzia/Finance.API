@@ -17,7 +17,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreateDate = DateTime.Now;
+                    entry.Entity.CreatedDate = DateTime.Now;
                     entry.Entity.CreatedBy = userName;
                     break;
                 case EntityState.Modified:
@@ -28,10 +28,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         }
         return base.SaveChangesAsync(cancellationToken);
     }
+    
     protected override void OnModelCreating(ModelBuilder builder) {
         base.OnModelCreating(builder);
+        
         builder.Entity<User>().Property(x => x.NormalizedUserName).HasMaxLength(90);
         builder.Entity<IdentityRole>().Property(x => x.NormalizedName).HasMaxLength(90);
-        builder.HasDefaultSchema("financeapp-db");
+        //builder.HasDefaultSchema("financeapp-db");
     }
 }
