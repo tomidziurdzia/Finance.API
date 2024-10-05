@@ -119,5 +119,4 @@ using(var scope = app.Services.CreateScope())
         logger.LogError(ex, "Error en la migration");
     }
 }
-
 app.Run();
