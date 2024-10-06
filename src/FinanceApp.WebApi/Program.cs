@@ -1,5 +1,6 @@
 using System.Text;
 using FinanceApp.Domain;
+using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Extensions;

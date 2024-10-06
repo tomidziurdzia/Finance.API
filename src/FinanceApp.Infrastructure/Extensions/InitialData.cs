@@ -1,4 +1,5 @@
 using FinanceApp.Domain;
+using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

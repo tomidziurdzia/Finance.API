@@ -1,5 +1,4 @@
-namespace FinanceApp.Domain.Abstractions;
-
+﻿namespace FinanceApp.Domain.Abstractions;
 public interface IAggregate<T> : IAggregate, IEntity<T>
 {
 }

@@ -1,7 +1,6 @@
-using MediatR;
+﻿using MediatR;
 
 namespace FinanceApp.Domain.Abstractions;
-
 public interface IDomainEvent : INotification
 {
     Guid EventId => Guid.NewGuid();

@@ -1,5 +1,4 @@
-namespace FinanceApp.Domain.Abstractions;
-
+﻿namespace FinanceApp.Domain.Abstractions;
 public abstract class Aggregate<TId> : Entity<TId>, IAggregate<TId>
 {
     private readonly List<IDomainEvent> _domainEvents = new();

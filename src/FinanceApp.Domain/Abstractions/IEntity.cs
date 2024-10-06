@@ -1,8 +1,8 @@
-namespace FinanceApp.Domain.Abstractions;
+﻿namespace FinanceApp.Domain.Abstractions;
 
 public interface IEntity<T> : IEntity
 {
-    public Guid Id { get; set; }
+    public T Id { get; set; }
 }
 
 public interface IEntity
