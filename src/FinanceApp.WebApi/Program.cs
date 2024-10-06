@@ -1,5 +1,7 @@
 using FinanceApp.WebApi;
 using FinanceApp.Application;
+using FinanceApp.Application.Data;
+using FinanceApp.Application.Features.Users.Queries.GetUsers;
 using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Data;
@@ -17,6 +19,10 @@ builder.Services
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+// Registrar IApplicationDbContext y su implementación
+builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
 
 var app = builder.Build();
 
