@@ -19,11 +19,7 @@ namespace FinanceApp.Application.Features.Users.Queries.GetUsers
                 .ToListAsync(cancellationToken);
 
             var usersDto = users.ToUserDtoList();
-            foreach (var user in usersDto)
-            {
-                Console.WriteLine($"Id: {user.Id}, Name: {user.Name}, Lastname: {user.Lastname}, Email: {user.Email}");
-            }
-            
+
             return new GetUsersResult(
                 new PaginatedResult<UserDto>(
                     pageIndex,
