@@ -1,5 +1,5 @@
 using FinanceApp.Domain;
-using FinanceApp.Domain.Common;
+using FinanceApp.Domain.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +12,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         
         var userName = "system";
-        foreach (var entry in ChangeTracker.Entries<BaseDomain>()) 
+        foreach (var entry in ChangeTracker.Entries<IEntity>()) 
         {
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreatedDate = DateTime.Now;
+                    entry.Entity.CreatedAt = DateTime.Now;
                     entry.Entity.CreatedBy = userName;
                     break;
                 case EntityState.Modified:
-                    entry.Entity.LastModifiedDate = DateTime.Now;
+                    entry.Entity.LastModified = DateTime.Now;
                     entry.Entity.LastModifiedBy = userName;
                     break;
             }
