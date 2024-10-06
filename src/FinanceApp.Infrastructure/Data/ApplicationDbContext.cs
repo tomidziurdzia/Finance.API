@@ -34,6 +34,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         
         builder.Entity<User>().Property(x => x.NormalizedUserName).HasMaxLength(90);
         builder.Entity<IdentityRole>().Property(x => x.NormalizedName).HasMaxLength(90);
-        //builder.HasDefaultSchema("financeapp-db");
     }
 }

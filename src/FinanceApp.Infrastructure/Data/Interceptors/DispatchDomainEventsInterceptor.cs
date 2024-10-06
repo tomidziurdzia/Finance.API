@@ -1,6 +1,4 @@
-using FinanceApp.Domain.Abstractions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace FinanceApp.Infrastructure.Data.Interceptors;
