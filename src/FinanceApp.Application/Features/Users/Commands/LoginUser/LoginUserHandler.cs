@@ -15,17 +15,9 @@ public class LoginUserHandler(
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
     private readonly IAuthService _authService = authService;
 
-    public async Task<LoginUserDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
-    {
-        var user = await _userManager.FindByEmailAsync(request.Email!);
-    }
 
-    private User LoginUser(LoginUserDto loginUserDto)
+    public Task<LoginUserDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(loginUserDto.Email!);
-        if (user == null)
-        {
-            throw new NotFoundEx
-        }
+        throw new NotImplementedException();
     }
 }
