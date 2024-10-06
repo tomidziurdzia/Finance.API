@@ -1,10 +1,8 @@
-using FinanceApp.Domain;
-using FinanceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
-namespace FinanceApp.Infrastructure.Extensions;
+namespace FinanceApp.Infrastructure.Data.Extensions;
 
 public class InitialData
 {
@@ -12,10 +10,12 @@ public class InitialData
         ApplicationDbContext context,
         UserManager<User> userManager,
         ILoggerFactory loggerFactory
-    ){
+    )
+    {
         try
         {
-            if(!userManager.Users.Any())
+            // Verifica si ya hay usuarios
+            if (!userManager.Users.Any())
             {
                 var user = new User
                 {
@@ -25,7 +25,7 @@ public class InitialData
                     UserName = "tomidziurdzia",
                 };
                 await userManager.CreateAsync(user, "Walter@960");
-                    
+
                 var user2 = new User
                 {
                     Name = "Xime",
@@ -39,7 +39,7 @@ public class InitialData
         catch (Exception e)
         {
             var logger = loggerFactory.CreateLogger<InitialData>();
-            logger.LogError(e.Message);
+            logger.LogError(e, "An error occurred while seeding the database");
         }
     }
 }

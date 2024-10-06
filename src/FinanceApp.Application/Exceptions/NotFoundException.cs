@@ -1,4 +1,12 @@
 namespace FinanceApp.Application.Exceptions;
 
-public abstract class NotFoundException(string name, object key)
-    : ApplicationException($"Entity \"{name}\" ({key}) not found ");
+public abstract class NotFoundException : Exception
+{
+    protected NotFoundException(string message) : base(message)
+    {
+    }
+
+    protected NotFoundException(string name, object key) : base($"Entity \"{name}\" ({key}) was not found.")
+    {
+    }
+}
