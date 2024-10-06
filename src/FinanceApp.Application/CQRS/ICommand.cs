@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace FinanceApp.Application.CQRS;
 
 public interface ICommand : ICommand<Unit>

@@ -1,4 +1,4 @@
-namespace FinanceApp.Application.Dtos;
+namespace FinanceApp.Application.Dtos.User;
 
 public record UserDto(
     Guid Id,

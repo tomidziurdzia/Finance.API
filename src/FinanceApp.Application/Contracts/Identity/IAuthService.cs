@@ -1,6 +1,3 @@
-using FinanceApp.Domain;
-using FinanceApp.Domain.Models;
-
 namespace FinanceApp.Application.Contracts.Identity;
 
 public interface IAuthService
