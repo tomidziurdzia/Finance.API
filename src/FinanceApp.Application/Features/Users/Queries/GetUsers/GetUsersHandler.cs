@@ -1,4 +1,5 @@
-﻿using FinanceApp.Application.Pagination;
+﻿using FinanceApp.Application.Extensions;
+using FinanceApp.Application.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Application.Features.Users.Queries.GetUsers
@@ -17,20 +18,14 @@ namespace FinanceApp.Application.Features.Users.Queries.GetUsers
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
 
-            // Mapea las entidades User a UserDto
-            var userDtos = users.Select(user => new UserDto(
-                Id: new Guid(user.Id),
-                Name: user.Name!,
-                Lastname: user.Lastname!,
-                Email: user.Email!
-            )).ToList();
+            var usersDto = users.ToUserDtoList();
 
             return new GetUsersResult(
                 new PaginatedResult<UserDto>(
                     pageIndex,
                     pageSize,
                     totalCount,
-                    userDtos));        
+                    users.ToUserDtoList()));        
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace FinanceApp.Application.Dtos;
 
-public class UserDto(
+public record UserDto(
     Guid Id,
     string Name,
     string Lastname,

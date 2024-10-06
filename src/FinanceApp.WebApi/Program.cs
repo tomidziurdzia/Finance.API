@@ -20,13 +20,10 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// Registrar IApplicationDbContext y su implementación
 builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseApiServices();
 
 if (app.Environment.IsDevelopment())
