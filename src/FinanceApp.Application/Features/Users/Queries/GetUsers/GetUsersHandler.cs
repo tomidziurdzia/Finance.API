@@ -1,4 +1,5 @@
-﻿using FinanceApp.Application.Extensions;
+﻿using FinanceApp.Application.Dtos.User;
+using FinanceApp.Application.Extensions;
 using FinanceApp.Application.Pagination;
 using Microsoft.EntityFrameworkCore;
 

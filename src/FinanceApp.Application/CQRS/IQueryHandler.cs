@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace FinanceApp.Application.CQRS;
 
 public interface IQueryHandler<in TQuery, TResponse>

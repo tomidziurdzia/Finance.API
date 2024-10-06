@@ -1,4 +1,5 @@
-﻿using FinanceApp.Application.Pagination;
+﻿using FinanceApp.Application.Dtos.User;
+using FinanceApp.Application.Pagination;
 using FinanceApp.Application.Features.Users.Queries.GetUsers;
 
 namespace FinanceApp.WebApi.Endpoints.Users;
