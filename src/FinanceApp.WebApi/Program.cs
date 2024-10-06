@@ -1,7 +1,10 @@
 using FinanceApp.WebApi;
 using FinanceApp.Application;
+using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure;
+using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,10 @@ builder.Services
     .AddApplicationServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration)
     .AddApiServices(builder.Configuration);
+
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
