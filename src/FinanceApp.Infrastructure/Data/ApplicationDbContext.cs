@@ -1,38 +1,16 @@
-using FinanceApp.Domain.Abstractions;
-using FinanceApp.Domain.Models;
-using Microsoft.AspNetCore.Identity;
+using FinanceApp.Application.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 
-namespace FinanceApp.Infrastructure.Data;
-
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<User>(options)
+namespace FinanceApp.Infrastructure.Data
 {
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) 
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : IdentityDbContext<User>(options), IApplicationDbContext
     {
-        
-        var userName = "system";
-        foreach (var entry in ChangeTracker.Entries<IEntity>()) 
+        public new DbSet<User> Users => Set<User>();
+
+        public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    entry.Entity.CreatedAt = DateTime.Now;
-                    entry.Entity.CreatedBy = userName;
-                    break;
-                case EntityState.Modified:
-                    entry.Entity.LastModified = DateTime.Now;
-                    entry.Entity.LastModifiedBy = userName;
-                    break;
-            }
+            return await base.SaveChangesAsync(cancellationToken);
         }
-        return base.SaveChangesAsync(cancellationToken);
-    }
-    
-    protected override void OnModelCreating(ModelBuilder builder) {
-        base.OnModelCreating(builder);
-        
-        builder.Entity<User>().Property(x => x.NormalizedUserName).HasMaxLength(90);
-        builder.Entity<IdentityRole>().Property(x => x.NormalizedName).HasMaxLength(90);
     }
 }
