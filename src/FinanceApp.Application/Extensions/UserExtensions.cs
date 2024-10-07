@@ -1,6 +1,4 @@
-﻿using FinanceApp.Application.Dtos.User;
-
-namespace FinanceApp.Application.Extensions;
+﻿namespace FinanceApp.Application.Extensions;
 
 public static class UserExtensions
 {
