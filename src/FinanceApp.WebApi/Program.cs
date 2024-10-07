@@ -1,7 +1,6 @@
 using FinanceApp.WebApi;
 using FinanceApp.Application;
 using FinanceApp.Application.Data;
-using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Extensions;

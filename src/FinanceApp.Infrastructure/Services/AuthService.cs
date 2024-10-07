@@ -4,7 +4,6 @@ using System.Text;
 using FinanceApp.Application.Contracts.Identity;
 using FinanceApp.Application.Models.Token;
 using FinanceApp.Domain;
-using FinanceApp.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

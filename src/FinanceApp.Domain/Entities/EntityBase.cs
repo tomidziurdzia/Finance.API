@@ -1,12 +1,8 @@
-﻿namespace FinanceApp.Domain.Abstractions;
+﻿namespace FinanceApp.Domain.Entities;
 
-public interface IEntity<T> : IEntity
+public class EntityBase : IEntityBase
 {
-    public T Id { get; set; }
-}
-
-public interface IEntity
-{
+    public Guid Id { get; set; }
     public DateTime? CreatedAt { get; set; }
     public string? CreatedBy { get; set; }
     public DateTime? LastModified { get; set; }
