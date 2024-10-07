@@ -13,6 +13,10 @@
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Users\Commands\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

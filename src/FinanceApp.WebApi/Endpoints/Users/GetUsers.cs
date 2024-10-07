@@ -1,28 +1,30 @@
-﻿using FinanceApp.Application.Dtos.User;
-using FinanceApp.Application.Pagination;
+﻿using Carter;
+using FinanceApp.Application.DTOs.User;
 using FinanceApp.Application.Features.Users.Queries.GetUsers;
+using MediatR;
 
 namespace FinanceApp.WebApi.Endpoints.Users;
 
-public record GetUsersResponse(PaginatedResult<UserDto> Users);
+public record GetUsersResponse(UserDto[] Users);
 
-public class GetUsers : ICarterModule
+public class GetUsersEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/users", async ([AsParameters] PaginationRequest request, ISender sender) =>
+        app.MapGet("/users", async (IMediator mediator) =>
             {
-                var result = await sender.Send(new GetUsersQuery(request));
+                var result = await mediator.Send(new GetUsersQuery());
 
-                var response = result.Adapt<GetUsersResponse>();
+                var response = new GetUsersResponse(result);
 
                 return Results.Ok(response);
             })
-            .WithName("GetUsers")
+            .WithName("GetAllUsers")
             .Produces<GetUsersResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithSummary("Get Users")
-            .WithDescription("Get Users");
+            .WithSummary("Get all users")
+            .WithDescription("This endpoint returns all registered users.");
+
     }
 }
