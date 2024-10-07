@@ -1,36 +1,23 @@
-using FinanceApp.WebApi;
-using FinanceApp.Application;
-using FinanceApp.Application.Data;
-using FinanceApp.Domain.Models;
-using FinanceApp.Infrastructure;
-using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Extensions;
-using Microsoft.AspNetCore.Identity;
+using FinanceApp.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services
-    .AddApplicationServices(builder.Configuration)
-    .AddInfrastructureServices(builder.Configuration)
-    .AddApiServices(builder.Configuration);
+builder.Services.AddFinanceAppServices(builder.Configuration);
 
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-// Registrar IApplicationDbContext y su implementación
-builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.UseApiServices();
-
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
     await app.InitialiseDatabaseAsync();
 }
+
+app.UseApiServices();
 
 app.Run();

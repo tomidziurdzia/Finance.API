@@ -1,6 +1,7 @@
+using FinanceApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceApp.Application.Data;
+namespace FinanceApp.Application;
 
 public interface IApplicationDbContext
 {

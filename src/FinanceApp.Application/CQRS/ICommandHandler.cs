@@ -1,13 +1,13 @@
+using MediatR;
+
 namespace FinanceApp.Application.CQRS;
 
-public interface ICommandHandler<in TCommand> 
-    : ICommandHandler<TCommand, Unit>
+public interface ICommandHandler<in TCommand> : ICommandHandler<TCommand, Unit>
     where TCommand : ICommand<Unit>
-{ 
+{
 }
 
-public interface ICommandHandler<in TCommand, TResponse> 
-    : IRequestHandler<TCommand, TResponse> 
+public interface ICommandHandler<in TCommand, TResponse> : IRequestHandler<TCommand, TResponse>
     where TCommand : ICommand<TResponse>
     where TResponse : notnull
 {

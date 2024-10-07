@@ -1,8 +1,8 @@
-﻿using FinanceApp.Application.Dtos.User;
-using FinanceApp.Application.Pagination;
+﻿using FinanceApp.Application.CQRS;
+using FinanceApp.Application.DTOs.User;
 
 namespace FinanceApp.Application.Features.Users.Queries.GetUsers;
 
-public record GetUsersQuery(PaginationRequest PaginationRequest) : IQuery<GetUsersResult>;
-
-public record GetUsersResult(PaginatedResult<UserDto> Users);
+public class GetUsersQuery : IQuery<UserDto[]>
+{
+}

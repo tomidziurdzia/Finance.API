@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using FinanceApp.Domain.Entities;
 
 namespace FinanceApp.Infrastructure.Data.Extensions;
 
