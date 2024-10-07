@@ -8,11 +8,12 @@ public class GetUsersQueryHandler(IUserService userService) : IQueryHandler<GetU
 {
     public async Task<UserDto[]> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var users = await userService.GetAll(); // Llama al servicio, el servicio llama al repositorio
+        var users = await userService.GetAll();
 
         return users.Select(user => new UserDto
         {
             Name = user.Name!,
+            Lastname = user.Lastname!,
             Email = user.Email!
         }).ToArray();
     }

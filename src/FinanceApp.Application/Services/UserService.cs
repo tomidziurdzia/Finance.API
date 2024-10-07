@@ -1,4 +1,5 @@
-﻿using FinanceApp.Domain.Entities;
+﻿using FinanceApp.Application.Exceptions;
+using FinanceApp.Domain.Entities;
 using FinanceApp.Domain.Repositories;
 using FinanceApp.Domain.Services;
 
@@ -8,7 +9,14 @@ public class UserService(IUserRepository userRepository) : IUserService
 {
     public async Task<User> Get(string userId)
     {
-        return await userRepository.GetByIdAsync(userId);
+        var user = await userRepository.GetByIdAsync(userId);
+
+        if (user == null)
+        {
+            throw new NotFoundException("User", userId);
+        }
+
+        return user;
     }
 
     public async Task<User[]> GetAll()
