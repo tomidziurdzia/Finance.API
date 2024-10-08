@@ -1,13 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using FinanceApp.Application.Contracts;
 using FinanceApp.Application.Models.Token;
 using FinanceApp.Domain.Entities;
-using FinanceApp.Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace FinanceApp.Infrastructure.Services;
 
@@ -39,5 +38,13 @@ public class AuthService(IHttpContextAccessor httpContextAccessor, IOptions<JwtS
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescription);
         return tokenHandler.WriteToken(token);
+    }
+    
+    public string GetSessionUser()
+    {
+        var username = _httpContextAccessor.HttpContext!.User?.Claims?
+            .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        return username!;
     }
 }

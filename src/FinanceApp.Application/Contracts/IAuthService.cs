@@ -1,8 +1,9 @@
 using FinanceApp.Domain.Entities;
 
-namespace FinanceApp.Domain.Services;
+namespace FinanceApp.Application.Contracts;
 
 public interface IAuthService
 {
+    string GetSessionUser();
     string CreateToken(User user);
 }

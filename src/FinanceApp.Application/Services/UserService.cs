@@ -1,7 +1,7 @@
-﻿using FinanceApp.Application.Exceptions;
+﻿using FinanceApp.Application.Contracts;
+using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Entities;
 using FinanceApp.Domain.Repositories;
-using FinanceApp.Domain.Services;
 
 namespace FinanceApp.Application.Services;
 
