@@ -25,7 +25,10 @@ public class AuthService(IHttpContextAccessor httpContextAccessor, IOptions<JwtS
             new Claim("email", user.Email!)
         };
         
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key!));
+        var tokenOriginal = _jwtSettings.Key;
+        var tokenInverse = new string(tokenOriginal!.Reverse().ToArray());
+        var tokenFinal = tokenOriginal + tokenInverse;
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenFinal));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescription = new SecurityTokenDescriptor

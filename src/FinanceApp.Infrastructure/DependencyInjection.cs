@@ -1,10 +1,8 @@
 using FinanceApp.Application.Models.Token;
 using FinanceApp.Domain.Entities;
 using FinanceApp.Infrastructure.Data;
-using FinanceApp.Infrastructure.Data.Interceptors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

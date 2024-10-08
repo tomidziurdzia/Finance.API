@@ -12,9 +12,10 @@ public class GetUsersQueryHandler(IUserService userService) : IQueryHandler<GetU
 
         return users.Select(user => new UserDto
         {
+            Id = user.Id!,
             Name = user.Name!,
             Lastname = user.Lastname!,
-            Email = user.Email!
+            Email = user.Email!,
         }).ToArray();
     }
 }
