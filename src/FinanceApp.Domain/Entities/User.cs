@@ -1,9 +1,13 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace FinanceApp.Domain.Entities;
 
 public class User : IdentityUser
 {
-    public string? Name { get; set; }
-    public string? Lastname { get; set; }
+    [Column(TypeName = "NVARCHAR(20)")]
+    public string? Name { get; init; }
+    [Column(TypeName = "NVARCHAR(20)")]
+    public string? Lastname { get; init; }
+    public string? Token { get; set; }
 }
