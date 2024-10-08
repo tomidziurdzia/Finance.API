@@ -6,6 +6,7 @@ using FinanceApp.Application.Services;
 using FinanceApp.Domain.Repositories;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Repositories;
+using FinanceApp.Infrastructure.Services;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
@@ -38,6 +39,7 @@ public static class ServiceCollectionExtensions
         // Registrar el repositorio y el servicio de usuarios
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }

@@ -1,10 +1,9 @@
-﻿using FinanceApp.Application.DTOs.User;
+﻿using System.Text.Json.Serialization;
+using FinanceApp.Application.DTOs.User;
 using MediatR;
 
-namespace FinanceApp.Application.Features.Auths.Commands.LoginUser;
-
-public class LoginUserCommand : IRequest<UserDto>
+public class LoginUserCommand(string email, string password) : IRequest<UserDto>
 {
-    public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string Email { get; } = email;
+    public string Password { get; } = password;
 }

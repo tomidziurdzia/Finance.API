@@ -9,5 +9,4 @@ public class User : IdentityUser
     public string? Name { get; init; }
     [Column(TypeName = "NVARCHAR(20)")]
     public string? Lastname { get; init; }
-    public string? Token { get; set; }
 }
