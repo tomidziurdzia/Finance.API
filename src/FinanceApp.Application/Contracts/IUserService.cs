@@ -1,6 +1,6 @@
 ﻿using FinanceApp.Domain.Entities;
 
-namespace FinanceApp.Domain.Services;
+namespace FinanceApp.Application.Contracts;
 
 public interface IUserService
 {

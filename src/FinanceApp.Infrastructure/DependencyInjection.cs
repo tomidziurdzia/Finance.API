@@ -1,3 +1,4 @@
+using FinanceApp.Application.Models.Token;
 using FinanceApp.Domain.Entities;
 using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Interceptors;
@@ -15,14 +16,9 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("DatabaseSupabase");
 
-        // Configurar Identity
-        services.AddIdentity<User, IdentityRole<string>>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-
-        // Otras configuraciones como el DbContext
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        services.AddIdentity<User, IdentityRole<string>>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+        services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
         return services;
     }

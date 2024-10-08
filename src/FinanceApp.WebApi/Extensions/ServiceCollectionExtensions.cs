@@ -1,9 +1,9 @@
 ﻿using Carter;
 using FinanceApp.Application.Behaviours;
+using FinanceApp.Application.Contracts;
 using FinanceApp.Application.Exceptions.Handler;
 using FinanceApp.Application.Services;
 using FinanceApp.Domain.Repositories;
-using FinanceApp.Domain.Services;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Repositories;
 using HealthChecks.UI.Client;

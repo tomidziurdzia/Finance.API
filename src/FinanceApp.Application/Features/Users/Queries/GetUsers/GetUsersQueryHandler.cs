@@ -1,6 +1,6 @@
-﻿using FinanceApp.Application.CQRS;
+﻿using FinanceApp.Application.Contracts;
+using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.User;
-using FinanceApp.Domain.Services;
 
 namespace FinanceApp.Application.Features.Users.Queries.GetUsers;
 
