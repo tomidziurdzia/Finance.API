@@ -1,6 +1,5 @@
 using Carter;
 using FinanceApp.Application.DTOs.User;
-using FinanceApp.Application.Features.Auths.Commands.LoginUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

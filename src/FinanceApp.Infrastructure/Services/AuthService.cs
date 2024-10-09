@@ -20,11 +20,11 @@ public class AuthService(IHttpContextAccessor httpContextAccessor, IOptions<JwtS
     {
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.NameId, user.UserName!),
-            new Claim("userId", user.Id),
-            new Claim("email", user.Email!)
+            new Claim(JwtRegisteredClaimNames.NameId, user.UserName!),  // El nombre del usuario
+            new Claim("userId", user.Id),  // El ID del usuario
+            new Claim("email", user.Email!)  // El correo electrónico del usuario
         };
-        
+
         var tokenOriginal = _jwtSettings.Key;
         var tokenInverse = new string(tokenOriginal!.Reverse().ToArray());
         var tokenFinal = tokenOriginal + tokenInverse;
@@ -42,6 +42,7 @@ public class AuthService(IHttpContextAccessor httpContextAccessor, IOptions<JwtS
         var token = tokenHandler.CreateToken(tokenDescription);
         return tokenHandler.WriteToken(token);
     }
+
     
     public string GetSessionUser()
     {

@@ -15,7 +15,7 @@ RUN dotnet restore "src/FinanceApp.WebApi/FinanceApp.WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/FinanceApp.WebApi"
 RUN dotnet build "FinanceApp.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
+    
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "FinanceApp.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
