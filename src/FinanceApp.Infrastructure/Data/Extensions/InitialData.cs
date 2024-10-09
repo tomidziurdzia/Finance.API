@@ -1,8 +1,9 @@
 using FinanceApp.Application.Models.Authorization;
 using FinanceApp.Domain.Models;
-using FinanceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+
+namespace FinanceApp.Infrastructure.Data.Extensions;
 
 public class InitialData
 {
@@ -28,20 +29,31 @@ public class InitialData
                 {
                     Name = "Tomas",
                     Lastname = "Dziurdzia",
-                    Email = "tomidziurdzia@gmail.com",
                     UserName = "tomidziurdzia",
+                    Email = "tomidziurdzia@gmail.com"
                 };
-                await userManager.CreateAsync(user, "Walter@960");
+                var result = await userManager.CreateAsync(user, "Walter@960");
+
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, Role.ADMIN);
+                }
 
                 var user2 = new User
                 {
                     Name = "Xime",
                     Lastname = "Apel",
-                    Email = "ximeapel@gmail.com",
                     UserName = "ximeapel",
+                    Email = "ximeapel@gmail.com"
                 };
-                await userManager.CreateAsync(user2, "Walter@960");
+                var result2 = await userManager.CreateAsync(user2, "Walter@960");
+
+                if (result2.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user2, Role.USER);
+                }
             }
+
         }
         catch (Exception e)
         {

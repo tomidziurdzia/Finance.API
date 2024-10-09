@@ -48,13 +48,7 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-builder.Services.AddIdentity<User, IdentityRole>(options => {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireNonAlphanumeric = true;
-        options.Password.RequiredLength = 12;
-    })
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
