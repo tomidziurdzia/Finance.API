@@ -6,6 +6,7 @@ using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Extensions;
 using FinanceApp.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -76,10 +77,12 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-});
+builder.Services.AddMvcCore()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
+
 
 var app = builder.Build();
 app.UseApiServices();

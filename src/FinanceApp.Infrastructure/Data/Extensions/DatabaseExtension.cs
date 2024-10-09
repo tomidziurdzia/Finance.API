@@ -14,26 +14,22 @@ public static class DatabaseExtension
         using var scope = app.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        // Aplicar migraciones
         await context.Database.MigrateAsync();
 
-        // Ejecutar el seeding de la base de datos
         await SeedAsync(scope.ServiceProvider);
     }
     
     private static async Task SeedAsync(IServiceProvider serviceProvider)
     {
-        // Obtén el loggerFactory, context y userManager
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
         var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        await SeedUserAsync(context, userManager, roleManager, loggerFactory);
+        await SeedUserAsync(context, userManager, loggerFactory);
     }
     
-    private static async Task SeedUserAsync(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ILoggerFactory loggerFactory)
+    private static async Task SeedUserAsync(ApplicationDbContext context, UserManager<User> userManager, ILoggerFactory loggerFactory)
     {
-        await InitialData.LoadDataAsync(context, userManager, roleManager, loggerFactory);
+        await InitialData.LoadDataAsync(context, userManager, loggerFactory);
     }
 }

@@ -15,19 +15,13 @@ public class AuthService(IHttpContextAccessor httpContextAccessor, IOptions<JwtS
 {
     private JwtSettings _jwtSettings { get; } = jwtSettings.Value;
 
-    public string CreateToken(User user, IList<string>? roles)
+    public string CreateToken(User user)
     {
         var claims = new List<Claim> {
             new Claim(JwtRegisteredClaimNames.NameId, user.UserName!),
             new Claim("userId", user.Id),
             new Claim("email", user.Email!)
         };
-
-        foreach(var rol in roles!)
-        {
-            var claim = new Claim(ClaimTypes.Role, rol);
-            claims.Add(claim);
-        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key!));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
