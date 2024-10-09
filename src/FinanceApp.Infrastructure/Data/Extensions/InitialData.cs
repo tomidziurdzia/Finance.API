@@ -1,4 +1,3 @@
-using FinanceApp.Application.Models.Authorization;
 using FinanceApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -10,19 +9,11 @@ public class InitialData
     public static async Task LoadDataAsync(
         ApplicationDbContext context,
         UserManager<User> userManager,
-        RoleManager<IdentityRole> roleManager,
         ILoggerFactory loggerFactory
     )
     {
         try
         {
-            if(!roleManager.Roles.Any())
-            {
-                await roleManager.CreateAsync(new IdentityRole(Role.ADMIN));
-                await roleManager.CreateAsync(new IdentityRole(Role.USER));
-            }
-            
-            // Verifica si ya hay usuarios
             if (!userManager.Users.Any())
             {
                 var user = new User
@@ -32,12 +23,7 @@ public class InitialData
                     UserName = "tomidziurdzia",
                     Email = "tomidziurdzia@gmail.com"
                 };
-                var result = await userManager.CreateAsync(user, "Walter@960");
-
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, Role.ADMIN);
-                }
+                await userManager.CreateAsync(user, "Walter@960");
 
                 var user2 = new User
                 {
@@ -46,12 +32,7 @@ public class InitialData
                     UserName = "ximeapel",
                     Email = "ximeapel@gmail.com"
                 };
-                var result2 = await userManager.CreateAsync(user2, "Walter@960");
-
-                if (result2.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user2, Role.USER);
-                }
+                await userManager.CreateAsync(user2, "Walter@960");
             }
 
         }
