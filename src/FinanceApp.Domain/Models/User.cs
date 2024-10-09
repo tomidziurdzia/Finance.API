@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace FinanceApp.Domain.Entities;
+namespace FinanceApp.Domain.Models;
 
 public class User : IdentityUser
 {

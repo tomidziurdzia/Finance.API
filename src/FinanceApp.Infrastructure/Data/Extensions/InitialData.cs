@@ -1,20 +1,26 @@
+using FinanceApp.Application.Models.Authorization;
+using FinanceApp.Domain.Models;
+using FinanceApp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using FinanceApp.Domain.Entities;
-
-namespace FinanceApp.Infrastructure.Data.Extensions;
 
 public class InitialData
 {
     public static async Task LoadDataAsync(
         ApplicationDbContext context,
         UserManager<User> userManager,
+        RoleManager<IdentityRole> roleManager,
         ILoggerFactory loggerFactory
     )
     {
         try
         {
+            if(!roleManager.Roles.Any())
+            {
+                await roleManager.CreateAsync(new IdentityRole(Role.ADMIN));
+                await roleManager.CreateAsync(new IdentityRole(Role.USER));
+            }
+            
             // Verifica si ya hay usuarios
             if (!userManager.Users.Any())
             {

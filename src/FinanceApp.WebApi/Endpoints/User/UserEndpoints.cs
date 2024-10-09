@@ -1,11 +1,12 @@
 using Carter;
 using FinanceApp.Application.DTOs.User;
+using FinanceApp.Application.Features.Auths.Users.Commands.LoginUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinanceApp.WebApi.Endpoints.Users;
+namespace FinanceApp.WebApi.Endpoints.User;
 
-public class LoginUserEndpoint : ICarterModule
+public class UserEndpoints : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {

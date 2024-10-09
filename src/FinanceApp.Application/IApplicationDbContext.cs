@@ -1,4 +1,4 @@
-using FinanceApp.Domain.Entities;
+using FinanceApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Application;

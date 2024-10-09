@@ -1,5 +1,4 @@
-using FinanceApp.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+using FinanceApp.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +6,9 @@ namespace FinanceApp.Infrastructure.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<User>(options)
     {
-        
-        public new DbSet<User> Users => Set<User>();
+        // Constructor correcto
 
+        // Si necesitas sobreescribir SaveChangesAsync, puedes hacerlo
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return await base.SaveChangesAsync(cancellationToken);

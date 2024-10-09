@@ -1,4 +1,4 @@
-using FinanceApp.Domain.Entities;
+using FinanceApp.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -23,7 +23,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        foreach (var entry in context.ChangeTracker.Entries<IEntityBase>())
+        foreach (var entry in context.ChangeTracker.Entries<IEntity>())
         {
             if (entry.State == EntityState.Added)
             {
