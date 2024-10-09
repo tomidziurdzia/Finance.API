@@ -18,17 +18,15 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddFinanceAppServices(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddApplicationServices() // Consolidamos aquí la configuración de la aplicación
+            .AddApplicationServices()
             .AddWebApi(configuration)
             .AddInfrastructureServices(configuration)
             .AddApiServices(configuration);
-
         return services;
     }
     
     private static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        // Registrar MediatR y comportamientos (Validation, Logging, etc.)
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(typeof(FinanceApp.Application.Features.Users.Queries.GetUsers.GetUsersQueryHandler).Assembly);
@@ -36,11 +34,8 @@ public static class ServiceCollectionExtensions
             config.AddOpenBehavior(typeof(LoggingBehavior<,>));
         });
 
-        // Registrar el repositorio y el servicio de usuarios
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IAuthService, AuthService>();
-
         return services;
     }
     
@@ -55,34 +50,21 @@ public static class ServiceCollectionExtensions
                 Description = "API for managing users, transactions, and other finance operations."
             });
         });
-    
         return services;
     }
 
     private static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Carter para manejo de rutas
         services.AddCarter();
-
-        // Manejador de excepciones
         services.AddExceptionHandler<CustomExceptionHandler>();
-
-        // Health Checks con PostgreSQL
         services.AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("DatabaseSupabase")!);
-
+            .AddNpgSql(configuration.GetConnectionString("DefaultConnection")!);
         return services;
     }
 
     public static WebApplication UseApiServices(this WebApplication app)
     {
-        // Mapear rutas de Carter
         app.MapCarter();
-
-        // Manejo de excepciones
-        app.UseExceptionHandler(options => { });
-
-        // Configurar Health Checks
         app.UseHealthChecks("/health",
             new HealthCheckOptions
             {

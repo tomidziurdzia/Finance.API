@@ -12,7 +12,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DatabaseSupabase");
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddIdentity<User, IdentityRole<string>>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
         services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
