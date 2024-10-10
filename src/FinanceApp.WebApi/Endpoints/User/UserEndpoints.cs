@@ -12,7 +12,7 @@ public class UserEndpoints : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        var userGroup = app.MapGroup("/user");
+        var userGroup = app.MapGroup("api/user");
         
         userGroup.MapPost("/login", async ([FromBody] LoginUserCommand request, IMediator mediator) =>
             {
@@ -51,6 +51,7 @@ public class UserEndpoints : ICarterModule
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Get user by ID")
-            .WithDescription("This endpoint returns a user by their ID.");
+            .WithDescription("This endpoint returns a user by their ID.")
+            .RequireAuthorization();
     }
 }
