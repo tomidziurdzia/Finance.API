@@ -2,6 +2,7 @@ using Carter;
 using FinanceApp.Application.DTOs.User;
 using FinanceApp.Application.Features.Auths.Users.Commands.LoginUser;
 using FinanceApp.Application.Features.Auths.Users.Commands.RegisterUser;
+using FinanceApp.Application.Features.Auths.Users.Queries.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,9 @@ public class UserEndpoints : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/login", async ([FromBody] LoginUserCommand request, IMediator mediator) =>
+        var userGroup = app.MapGroup("/user");
+        
+        userGroup.MapPost("/login", async ([FromBody] LoginUserCommand request, IMediator mediator) =>
             {
                 var result = await mediator.Send(request);
 
@@ -24,7 +27,7 @@ public class UserEndpoints : ICarterModule
             .WithSummary("Login user")
             .WithDescription("This endpoint returns a user.");
         
-        app.MapPost("/register", async ([FromBody] RegisterUserCommand request, IMediator mediator) =>
+        userGroup.MapPost("/register", async ([FromBody] RegisterUserCommand request, IMediator mediator) =>
             {
                 var result = await mediator.Send(request);
 
@@ -36,5 +39,18 @@ public class UserEndpoints : ICarterModule
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Register user")
             .WithDescription("This endpoint returns a user.");
+        
+        userGroup.MapGet("/{id}", async (string id, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetUserByIdQuery(id));
+
+                return Results.Ok(result);
+            })
+            .WithName("GetUserById")
+            .Produces<AuthResponseDto>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithSummary("Get user by ID")
+            .WithDescription("This endpoint returns a user by their ID.");
     }
 }
