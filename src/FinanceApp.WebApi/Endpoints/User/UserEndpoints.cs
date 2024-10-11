@@ -56,16 +56,17 @@ public class UserEndpoints : ICarterModule
             .RequireAuthorization();
 
         userGroup.MapPost("/update-password", async ([FromBody] ResetPasswordCommand request, IMediator mediator) =>
-        {
-            var result = await mediator.Send(request);
+            {
+                var result = await mediator.Send(request);
 
-            return Results.Ok(result);
-        })
-        .WithName("UpdatePassword")
-        .Produces<AuthResponseDto>(StatusCodes.Status200OK)
-        .ProducesProblem(StatusCodes.Status400BadRequest)
-        .ProducesProblem(StatusCodes.Status404NotFound)
-        .WithSummary("Update Password")
-        .WithDescription("This endpoint returns a user.");
+                return Results.Ok(result);
+            })
+            .WithName("UpdatePassword")
+            .Produces<AuthResponseDto>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithSummary("Update Password")
+            .WithDescription("This endpoint returns a user.")
+            .RequireAuthorization();
     }
 }
