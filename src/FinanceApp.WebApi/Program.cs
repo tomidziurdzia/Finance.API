@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using System.Text;
 using FinanceApp.Application;
 using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure;
@@ -6,8 +6,8 @@ using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Extensions;
 using FinanceApp.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -49,32 +49,34 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddSignInManager<SignInManager<User>>()
+    .AddDefaultTokenProviders()
+    .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User>>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    .AddJwtBearer(opt => 
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        opt.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["JwtSettings:Audience"],
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SigningKey"]!)
-            )
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)),
+            ValidateAudience = false,
+            ValidateIssuer = false
         };
     });
 
-// Configurar servicios de autorización
-builder.Services.AddAuthorization(options =>
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AuthenticatedUser", policy =>
-    {
-        policy.RequireAuthenticatedUser();  // Política para requerir usuario autenticado
-    });
+    options.AddPolicy("CorsPolicy", b => b.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+    );
+    
 });
 
 builder.Services.AddMvcCore()
