@@ -1,16 +1,12 @@
 using System.Text;
-using System.Text.Json.Serialization;
 using FinanceApp.Application;
 using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Extensions;
 using FinanceApp.WebApi;
-using FinanceApp.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -54,12 +50,10 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 builder.Services.AddIdentityCore<User>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()  // Configurar la base de datos para Identity
-    .AddSignInManager<SignInManager<User>>()           // Agregar SignInManager
-    .AddDefaultTokenProviders()                        // Agregar generadores de tokens por defecto
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddSignInManager<SignInManager<User>>()
+    .AddDefaultTokenProviders()
     .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User>>();
-
-builder.Services.TryAddSingleton<TimeProvider>(TimeProvider.System);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt => 
