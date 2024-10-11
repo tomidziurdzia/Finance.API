@@ -88,7 +88,6 @@ builder.Services.AddMvcCore()
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
 
-
 var app = builder.Build();
 app.UseApiServices();
 if (app.Environment.IsDevelopment())
