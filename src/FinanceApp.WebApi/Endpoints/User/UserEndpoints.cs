@@ -2,6 +2,7 @@ using Carter;
 using FinanceApp.Application.DTOs.User;
 using FinanceApp.Application.Features.Auths.Users.Commands.LoginUser;
 using FinanceApp.Application.Features.Auths.Users.Commands.RegisterUser;
+using FinanceApp.Application.Features.Auths.Users.Commands.ResetPassword;
 using FinanceApp.Application.Features.Auths.Users.Queries.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,20 @@ public class UserEndpoints : ICarterModule
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Get user by ID")
-            .WithDescription("This endpoint returns a user by their ID.");
+            .WithDescription("This endpoint returns a user by their ID.")
+            .RequireAuthorization();
+
+        userGroup.MapPost("/update-password", async ([FromBody] ResetPasswordCommand request, IMediator mediator) =>
+        {
+            var result = await mediator.Send(request);
+
+            return Results.Ok(result);
+        })
+        .WithName("UpdatePassword")
+        .Produces<AuthResponseDto>(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .WithSummary("Update Password")
+        .WithDescription("This endpoint returns a user.");
     }
 }
