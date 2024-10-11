@@ -4,6 +4,7 @@ using FinanceApp.Domain.Models;
 using FinanceApp.Infrastructure;
 using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Data.Extensions;
+using FinanceApp.Infrastructure.Services.Message;
 using FinanceApp.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,8 @@ builder.Services
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("GmailSettings"));
+
 
 builder.Services.AddSwaggerGen(option =>
 {

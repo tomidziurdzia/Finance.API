@@ -1,7 +1,9 @@
 using FinanceApp.Application.Contracts.Identity;
+using FinanceApp.Application.Contracts.Infrastructure;
 using FinanceApp.Application.Models.Token;
 using FinanceApp.Infrastructure.Data;
 using FinanceApp.Infrastructure.Services.Auth;
+using FinanceApp.Infrastructure.Services.Message;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,7 @@ public static class DependencyInjection
             )
         );
         
+        services.AddTransient<IEmailService, EmailService>();
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
         return services;
