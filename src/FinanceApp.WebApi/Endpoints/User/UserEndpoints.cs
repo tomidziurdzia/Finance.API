@@ -5,8 +5,8 @@ using FinanceApp.Application.Features.Auths.Users.Commands.RegisterUser;
 using FinanceApp.Application.Features.Auths.Users.Commands.ResetPassword;
 using FinanceApp.Application.Features.Auths.Users.Commands.ResetPasswordToken;
 using FinanceApp.Application.Features.Auths.Users.Commands.SendPassword;
-using FinanceApp.Application.Features.Auths.Users.Commands.UpdateUser;
-using FinanceApp.Application.Features.Auths.Users.Queries.GetUserById;
+using FinanceApp.Application.Features.Auths.Users.Queries.GetUserId;
+using FinanceApp.Application.Features.Auths.Users.Queries.GetUserToken;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,7 +49,7 @@ public class UserEndpoints : ICarterModule
         
         userGroup.MapGet("/{id}", async (string id, IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetUserByIdQuery(id));
+                var result = await mediator.Send(new GetUserIdQuery(id));
 
                 return Results.Ok(result);
             })
@@ -105,19 +105,19 @@ public class UserEndpoints : ICarterModule
             .WithSummary("Forget Password")
             .WithDescription("This endpoint returns a user.");
         
-        userGroup.MapPut("/update-user", async ([FromBody] UpdateUserCommand request, IMediator mediator) =>
+        userGroup.MapGet("/", async (IMediator mediator) =>
             {
-                var result = await mediator.Send(request);
+                var result = await mediator.Send(new GetUserTokenQuery());
 
                 return Results.Ok(result);
             })
             .WithTags(OpenApiTag)
-            .WithName("UpdateUser")
+            .WithName("GetUserToken")
             .Produces<AuthResponseDto>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithSummary("Update User")
-            .WithDescription("This endpoint returns a user.")
+            .WithSummary("Get user by token")
+            .WithDescription("This endpoint returns a user by their Token.")
             .RequireAuthorization();
     }
 }

@@ -3,13 +3,13 @@ using FinanceApp.Application.DTOs.User;
 using FinanceApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace FinanceApp.Application.Features.Auths.Users.Queries.GetUserById;
+namespace FinanceApp.Application.Features.Auths.Users.Queries.GetUserId;
 
-public class GetUserByIdQueryHandler(UserManager<User> userManager) : IQueryHandler<GetUserByIdQuery, AuthResponseDto>
+public class GetUserIdQueryHandler(UserManager<User> userManager) : IQueryHandler<GetUserIdQuery, AuthResponseDto>
 {
     private readonly UserManager<User> _userManager = userManager;
 
-    public async Task<AuthResponseDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<AuthResponseDto> Handle(GetUserIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(request.UserId!);
         if(user is null)
