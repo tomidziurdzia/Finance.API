@@ -5,6 +5,7 @@ using FinanceApp.Application.Features.Auths.Users.Commands.RegisterUser;
 using FinanceApp.Application.Features.Auths.Users.Commands.ResetPassword;
 using FinanceApp.Application.Features.Auths.Users.Commands.ResetPasswordToken;
 using FinanceApp.Application.Features.Auths.Users.Commands.SendPassword;
+using FinanceApp.Application.Features.Auths.Users.Commands.UpdateUser;
 using FinanceApp.Application.Features.Auths.Users.Queries.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -103,5 +104,20 @@ public class UserEndpoints : ICarterModule
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Forget Password")
             .WithDescription("This endpoint returns a user.");
+        
+        userGroup.MapPut("/update-user", async ([FromBody] UpdateUserCommand request, IMediator mediator) =>
+            {
+                var result = await mediator.Send(request);
+
+                return Results.Ok(result);
+            })
+            .WithTags(OpenApiTag)
+            .WithName("UpdateUser")
+            .Produces<AuthResponseDto>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithSummary("Update User")
+            .WithDescription("This endpoint returns a user.")
+            .RequireAuthorization();
     }
 }
