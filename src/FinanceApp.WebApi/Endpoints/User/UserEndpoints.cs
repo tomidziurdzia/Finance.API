@@ -5,7 +5,7 @@ using FinanceApp.Application.Features.Auths.Users.Commands.RegisterUser;
 using FinanceApp.Application.Features.Auths.Users.Commands.ResetPassword;
 using FinanceApp.Application.Features.Auths.Users.Commands.ResetPasswordToken;
 using FinanceApp.Application.Features.Auths.Users.Commands.SendPassword;
-using FinanceApp.Application.Features.Auths.Users.Queries.GetUserById;
+using FinanceApp.Application.Features.Auths.Users.Queries.GetUserId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +48,7 @@ public class UserEndpoints : ICarterModule
         
         userGroup.MapGet("/{id}", async (string id, IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetUserByIdQuery(id));
+                var result = await mediator.Send(new GetUserIdQuery(id));
 
                 return Results.Ok(result);
             })
