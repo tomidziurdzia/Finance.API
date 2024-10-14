@@ -1,4 +1,7 @@
-﻿namespace FinanceApp.Application.DTOs.User;
+﻿using FinanceApp.Application.DTOs.Category;
+using FinanceApp.Domain.Models;
+
+namespace FinanceApp.Application.DTOs.User;
 
 public class AuthResponseDto
 {
@@ -8,4 +11,5 @@ public class AuthResponseDto
     public string? Email { get; set; }
     public string? Username { get; set; }
     public string? Token { get; set; }
+    public List<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
 }

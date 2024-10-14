@@ -1,31 +1,28 @@
 using FinanceApp.Domain.Models;
 using FinanceApp.Domain.Repositories;
 using FinanceApp.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace FinanceApp.Infrastructure.Repositories;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public CategoryRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IEnumerable<Category>> GetDefaultCategoriesAsync()
     {
-        return await _context.Categories!.ToListAsync();
+        var categoryData = await File.ReadAllTextAsync("../FinanceApp.Infrastructure/Data/Extensions/Json/category.json");
+        var categories = JsonConvert.DeserializeObject<List<Category>>(categoryData);
+
+        if (categories == null)
+        {
+            throw new Exception("Failed to parse categories from JSON file.");
+        }
+
+        return categories;
     }
 
     public async Task AddCategoriesToUser(IEnumerable<Category> categories)
     {
-        _context.Categories!.AddRange(categories);
-        await _context.SaveChangesAsync();
+        context.Categories!.AddRange(categories);
+        await context.SaveChangesAsync();
     }
-}
-
-public interface ICategoryRepository
-{
 }

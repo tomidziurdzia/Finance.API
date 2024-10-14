@@ -1,0 +1,42 @@
+[
+  {
+    "Name": "Salary",
+    "Description": "Monthly salary or income from employment."
+  },
+  {
+    "Name": "Groceries",
+    "Description": "Expenses for daily food and household items."
+  },
+  {
+    "Name": "Rent",
+    "Description": "Monthly payment for housing or rent."
+  },
+  {
+    "Name": "Utilities",
+    "Description": "Bills for electricity, water, gas, and internet."
+  },
+  {
+    "Name": "Transportation",
+    "Description": "Daily transportation costs like fuel, public transport, or car maintenance."
+  },
+  {
+    "Name": "Dining Out",
+    "Description": "Expenses on eating out at restaurants or cafes."
+  },
+  {
+    "Name": "Entertainment",
+    "Description": "Leisure activities such as movies, events, and hobbies."
+  },
+  {
+    "Name": "Healthcare",
+    "Description": "Medical expenses like doctor visits, medication, and insurance."
+  },
+  {
+    "Name": "Savings",
+    "Description": "Money set aside for future use or emergencies."
+  },
+  {
+    "Name": "Subscriptions",
+    "Description": "Recurring payments for services like streaming or gym memberships."
+  }
+]

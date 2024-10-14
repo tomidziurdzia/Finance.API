@@ -3,11 +3,12 @@ using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.User;
 using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
+using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
 namespace FinanceApp.Application.Features.Auths.Users.Commands.RegisterUser;
 
-public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthService authService)
+public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthService authService, ICategoriesRepository categoriesRepository)
     : ICommandHandler<RegisterUserCommand, AuthResponseDto>
 {
     public async Task<AuthResponseDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -27,6 +28,17 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
 
         if (result.Succeeded)
         {
+            var defaultCategories = await categoriesRepository.GetDefaultCategoriesAsync();
+
+            var userCategories = defaultCategories.Select(category => new Category
+            {
+                Name = category.Name,
+                Description = category.Description,
+                UserId = user.Id,
+            }).ToList();
+            
+            await categoriesRepository.AddCategoriesToUser(userCategories);
+            
             return new AuthResponseDto()
             {
                 Id = user.Id,
@@ -37,7 +49,6 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
                 Token = authService.CreateToken(user),
             };
         }
-
-        throw new Exception("No se pudo registrar el usuario");
+        throw new Exception("User could not be registered");
     }
 }
