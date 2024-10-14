@@ -26,7 +26,8 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
 
         var result = await userManager.CreateAsync(user!, request.Password!);
 
-        if (result.Succeeded)
+        if (!result.Succeeded) throw new Exception("User could not be registered");
+        try
         {
             var defaultCategories = await categoriesRepository.GetDefaultCategoriesAsync();
 
@@ -36,19 +37,22 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
                 Description = category.Description,
                 UserId = user.Id,
             }).ToList();
-            
+                
             await categoriesRepository.AddCategoriesToUser(userCategories);
-            
-            return new AuthResponseDto()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Lastname = user.Lastname,
-                Email = user.Email,
-                Username = user.UserName,
-                Token = authService.CreateToken(user),
-            };
         }
-        throw new Exception("User could not be registered");
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to assign default categories to user: {ex.Message}");
+        }
+            
+        return new AuthResponseDto()
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Lastname = user.Lastname,
+            Email = user.Email,
+            Username = user.UserName,
+            Token = authService.CreateToken(user),
+        };
     }
 }
