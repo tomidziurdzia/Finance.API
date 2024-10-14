@@ -1,6 +1,7 @@
 using FinanceApp.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace FinanceApp.Infrastructure.Data.Extensions;
 
@@ -33,8 +34,32 @@ public class InitialData
                     Email = "ximeapel@gmail.com"
                 };
                 await userManager.CreateAsync(user2, "Walter@960");
+                
+                if (!context.Categories!.Any())
+                {
+                    var categoryData = File.ReadAllText("../FinanceApp.Infrastructure/Data/Extensions/Json/category.json");
+                    var categories = JsonConvert.DeserializeObject<List<Category>>(categoryData);
+                    
+                    foreach (var category in categories!)
+                    {
+                        // Crea categorías nuevas para cada usuario
+                        var userCategory = new Category
+                        {
+                            Name = category.Name,
+                            Description = category.Description,
+                            UserId = user.Id // Asigna la categoría al primer usuario
+                        };
+                        var user2Category = new Category
+                        {
+                            Name = category.Name,
+                            Description = category.Description,
+                            UserId = user2.Id // Asigna la categoría al segundo usuario
+                        };
+                        await context.Categories!.AddRangeAsync(userCategory, user2Category);
+                    }
+                    await context.SaveChangesAsync();
+                }
             }
-
         }
         catch (Exception e)
         {
