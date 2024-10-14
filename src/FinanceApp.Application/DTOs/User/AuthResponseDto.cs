@@ -11,5 +11,4 @@ public class AuthResponseDto
     public string? Email { get; set; }
     public string? Username { get; set; }
     public string? Token { get; set; }
-    public List<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
 }
