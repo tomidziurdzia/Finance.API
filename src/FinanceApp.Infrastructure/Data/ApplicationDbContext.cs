@@ -46,7 +46,7 @@ namespace FinanceApp.Infrastructure.Data
                 .WithMany(u => u.Categories)
                 .HasForeignKey(c => c.UserId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
         
         public DbSet<Category>? Categories { get; set; }

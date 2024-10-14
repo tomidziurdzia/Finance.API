@@ -29,7 +29,7 @@ public class CategoryEndpoints : ICarterModule
             .WithDescription("This endpoint returns all categories.")
             .RequireAuthorization();
         
-        categoryGroup.MapGet("/{id}", async (Guid id, IMediator mediator) =>
+        categoryGroup.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetByIdQuery(id));
 
