@@ -1,3 +1,5 @@
+using FinanceApp.Domain.Models.Enums;
+
 namespace FinanceApp.Application.DTOs.Category;
 
 public class CategoryDto
@@ -6,4 +8,5 @@ public class CategoryDto
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string? UserId { get; set; }
+    public string? Type { get; set; }
 }

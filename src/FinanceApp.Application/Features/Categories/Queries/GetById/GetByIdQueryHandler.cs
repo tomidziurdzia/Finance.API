@@ -24,6 +24,7 @@ public class GetByIdQueryHandler(ICategoriesRepository repository, IAuthService 
         {
             Id = category.Id,
             Name = category.Name,
+            Type = category.Type.ToString(),
             Description = category.Description,
             UserId = category.UserId
         };

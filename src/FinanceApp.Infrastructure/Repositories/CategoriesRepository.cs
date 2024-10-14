@@ -1,5 +1,6 @@
 using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
+using FinanceApp.Domain.Models.Enums;
 using FinanceApp.Domain.Repositories;
 using FinanceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +13,16 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
     {
         var categories = new List<Category>
         {
-            new Category { Name = "Salary", Description = "Monthly salary or income from employment." },
-            new Category { Name = "Groceries", Description = "Expenses for daily food and household items." },
-            new Category { Name = "Rent", Description = "Monthly payment for housing or rent." },
-            new Category { Name = "Utilities", Description = "Bills for electricity, water, gas, and internet." },
-            new Category { Name = "Transportation", Description = "Daily transportation costs like fuel, public transport, or car maintenance." },
-            new Category { Name = "Dining Out", Description = "Expenses on eating out at restaurants or cafes." },
-            new Category { Name = "Entertainment", Description = "Leisure activities such as movies, events, and hobbies." },
-            new Category { Name = "Healthcare", Description = "Medical expenses like doctor visits, medication, and insurance." },
-            new Category { Name = "Savings", Description = "Money set aside for future use or emergencies." },
-            new Category { Name = "Subscriptions", Description = "Recurring payments for services like streaming or gym memberships." }
+            new Category { Name = "Salary", Description = "Monthly salary or income from employment.", Type = CategoryType.Income},
+            new Category { Name = "Groceries", Description = "Expenses for daily food and household items." , Type = CategoryType.Expense},
+            new Category { Name = "Rent", Description = "Monthly payment for housing or rent.", Type = CategoryType.Expense},
+            new Category { Name = "Utilities", Description = "Bills for electricity, water, gas, and internet." , Type = CategoryType.Expense},
+            new Category { Name = "Transportation", Description = "Daily transportation costs like fuel, public transport, or car maintenance." , Type = CategoryType.Expense},
+            new Category { Name = "Dining Out", Description = "Expenses on eating out at restaurants or cafes." , Type = CategoryType.Expense},
+            new Category { Name = "Entertainment", Description = "Leisure activities such as movies, events, and hobbies." , Type = CategoryType.Expense},
+            new Category { Name = "Healthcare", Description = "Medical expenses like doctor visits, medication, and insurance." , Type = CategoryType.Expense},
+            new Category { Name = "Savings", Description = "Money set aside for future use or emergencies." , Type = CategoryType.Investment},
+            new Category { Name = "Subscriptions", Description = "Recurring payments for services like streaming or gym memberships." , Type = CategoryType.Expense}
         };
         return await Task.FromResult(categories);
     }
