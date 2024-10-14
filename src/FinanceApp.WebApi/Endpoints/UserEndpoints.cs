@@ -10,7 +10,7 @@ using FinanceApp.Application.Features.Auths.Users.Queries.GetUserToken;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinanceApp.WebApi.Endpoints.User;
+namespace FinanceApp.WebApi.Endpoints;
 
 public class UserEndpoints : ICarterModule
 {
