@@ -10,6 +10,7 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
     public async Task<IEnumerable<Category>> GetDefaultCategoriesAsync()
     {
         var categories = new List<Category>
+        if (categories == null)
         {
             new Category { Name = "Salary", Description = "Monthly salary or income from employment." },
             new Category { Name = "Groceries", Description = "Expenses for daily food and household items." },
