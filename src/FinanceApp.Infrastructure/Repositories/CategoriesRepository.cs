@@ -1,13 +1,14 @@
+using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
 using FinanceApp.Domain.Repositories;
 using FinanceApp.Infrastructure.Data;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Infrastructure.Repositories;
 
 public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRepository
 {
-    public async Task<IEnumerable<Category>> GetDefaultCategoriesAsync()
+    public async Task<List<Category>> GetDefaultCategoriesAsync()
     {
         var categories = new List<Category>
         {
@@ -25,7 +26,61 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
         return await Task.FromResult(categories);
     }
 
-    public async Task AddCategoriesToUser(IEnumerable<Category> categories)
+    public Task AddCategoriesToUser(IEnumerable<Category> categories)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Category> Get(string userId, Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var category = await context.Categories!.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
+            if(category == null) throw new NotFoundException(nameof(Category), id);
+
+            return category;
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException(ex.Message);
+        }
+    }
+
+    public Task<Category> TryGet(Guid id, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<Category>> GetAll(string userId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var categories = context.Categories!.Where(u => u.User!.Id == userId).Include(u => u.User).AsQueryable();
+
+            return await categories.ToListAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException(ex.Message);
+        }
+    }
+
+    public Task Create(Category category, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Update(Category category, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Delete(Category category, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task AddCategoriesToUser(List<Category> categories)
     {
         context.Categories!.AddRange(categories);
         await context.SaveChangesAsync();
