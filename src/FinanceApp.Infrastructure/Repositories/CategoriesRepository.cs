@@ -9,7 +9,7 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
 {
     public async Task<IEnumerable<Category>> GetDefaultCategoriesAsync()
     {
-        var categoryData = await File.ReadAllTextAsync("../FinanceApp.Infrastructure/Data/Extensions/Json/category.json");
+        var categoryData = await File.ReadAllTextAsync("./Data/Extensions/Json/category.json");
         var categories = JsonConvert.DeserializeObject<List<Category>>(categoryData);
 
         if (categories == null)
