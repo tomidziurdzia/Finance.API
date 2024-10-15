@@ -24,8 +24,6 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
             Email = request.Email,
         };
         
-        Console.WriteLine("USER" + user);
-
         var result = await userManager.CreateAsync(user!, request.Password!);
 
         if (!result.Succeeded) throw new Exception("User could not be registered");
