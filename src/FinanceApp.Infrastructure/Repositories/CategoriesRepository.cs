@@ -88,9 +88,17 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
         }
     }
 
-    public Task Update(Category category, CancellationToken cancellationToken)
+    public async Task Update(Category category, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            context.Categories!.Update(category);
+            await context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error updating category: {ex.Message}");
+        }
     }
 
     public Task Delete(Category category, CancellationToken cancellationToken)
