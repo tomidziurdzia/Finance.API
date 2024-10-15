@@ -1,5 +1,6 @@
 using Carter;
 using FinanceApp.Application.DTOs.Category;
+using FinanceApp.Application.Features.Categories.Commands.CreateCategory;
 using FinanceApp.Application.Features.Categories.Queries.GetAll;
 using FinanceApp.Application.Features.Categories.Queries.GetById;
 using MediatR;
@@ -42,6 +43,20 @@ public class CategoryEndpoints : ICarterModule
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Get category by ID")
             .WithDescription("This endpoint returns a category by their ID.")
+            .RequireAuthorization();
+        
+        categoryGroup.MapPost("/", async (CreateCategoryCommand command, IMediator mediator) =>
+            {
+                var result = await mediator.Send(command);
+
+                return Results.Created($"/categories/{result.Id}", result);
+            })
+            .WithTags(OpenApiTag)
+            .WithName("CreateCategory")
+            .Produces<CategoryDto>(StatusCodes.Status201Created)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Create a new category")
+            .WithDescription("This endpoint creates a new category and returns the created category.")
             .RequireAuthorization();
     }
 }

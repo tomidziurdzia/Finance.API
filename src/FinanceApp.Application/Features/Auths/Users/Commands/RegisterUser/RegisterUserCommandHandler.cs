@@ -23,6 +23,8 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
             UserName = request.Email!.Split('@')[0],
             Email = request.Email,
         };
+        
+        Console.WriteLine("USER" + user);
 
         var result = await userManager.CreateAsync(user!, request.Password!);
 
@@ -35,6 +37,7 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
             {
                 Name = category.Name,
                 Description = category.Description,
+                Type = category.Type,
                 UserId = user.Id,
             }).ToList();
                 

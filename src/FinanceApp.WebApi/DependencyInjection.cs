@@ -13,7 +13,7 @@ public static class DependencyInjection
 
         services.AddExceptionHandler<CustomExceptionHandler>();
         services.AddHealthChecks()
-            .AddNpgSql(configuration.GetConnectionString("DatabaseSupabase")!);
+            .AddNpgSql(configuration.GetConnectionString("DatabaseLocalhost")!);
 
         return services;
     }

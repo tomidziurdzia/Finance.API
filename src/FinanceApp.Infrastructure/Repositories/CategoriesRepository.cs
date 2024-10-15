@@ -27,9 +27,18 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
         return await Task.FromResult(categories);
     }
 
-    public Task AddCategoriesToUser(IEnumerable<Category> categories)
+    public async Task AddCategoriesToUser(IEnumerable<Category> categories)
     {
-        throw new NotImplementedException();
+        try
+        {
+            Console.WriteLine("CATEGORIES" + categories);
+            context.Categories!.AddRange(categories);
+            await context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error adding categories to user: {ex.Message}");
+        }
     }
 
     public async Task<Category> Get(string userId, Guid id, CancellationToken cancellationToken)
@@ -66,9 +75,17 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
         }
     }
 
-    public Task Create(Category category, CancellationToken cancellationToken)
+    public async Task Create(Category category, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await context.Categories!.AddAsync(category, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error creating category: {ex.Message}");
+        }
     }
 
     public Task Update(Category category, CancellationToken cancellationToken)
