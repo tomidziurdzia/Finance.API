@@ -20,7 +20,7 @@ public static class DependencyInjection
         services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 
         services.AddDbContext<ApplicationDbContext>(options => 
-            options.UseNpgsql(configuration.GetConnectionString("DatabaseSupabase"),
+            options.UseNpgsql(configuration.GetConnectionString("DatabaseLocalhost"),
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
             )
         );
