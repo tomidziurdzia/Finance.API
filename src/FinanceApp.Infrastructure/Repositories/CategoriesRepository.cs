@@ -31,7 +31,6 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
     {
         try
         {
-            Console.WriteLine("CATEGORIES" + categories);
             context.Categories!.AddRange(categories);
             await context.SaveChangesAsync();
         }
@@ -55,12 +54,6 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
             throw new BadRequestException(ex.Message);
         }
     }
-
-    public Task<Category> TryGet(Guid id, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<List<Category>> GetAll(string userId, CancellationToken cancellationToken)
     {
         try
@@ -101,14 +94,17 @@ public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRep
         }
     }
 
-    public Task Delete(Category category, CancellationToken cancellationToken)
+    public async Task Delete(Category category, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            context.Categories!.Remove(category);
 
-    public async Task AddCategoriesToUser(List<Category> categories)
-    {
-        context.Categories!.AddRange(categories);
-        await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error deleting category: {ex.Message}");
+        }
     }
 }

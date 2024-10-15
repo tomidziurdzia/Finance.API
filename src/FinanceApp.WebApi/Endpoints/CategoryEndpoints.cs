@@ -1,6 +1,7 @@
 using Carter;
 using FinanceApp.Application.DTOs.Category;
 using FinanceApp.Application.Features.Categories.Commands.CreateCategory;
+using FinanceApp.Application.Features.Categories.Commands.DeleteCategory;
 using FinanceApp.Application.Features.Categories.Commands.UpdateCategory;
 using FinanceApp.Application.Features.Categories.Queries.GetAll;
 using FinanceApp.Application.Features.Categories.Queries.GetById;
@@ -75,6 +76,21 @@ public class CategoryEndpoints : ICarterModule
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Update category name and description")
             .WithDescription("This endpoint allows updating the name and description of a category.")
+            .RequireAuthorization();
+
+        categoryGroup.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                await mediator.Send(new DeleteCategoryCommand { Id = id });
+
+                return Results.Ok();
+            })
+            .WithTags(OpenApiTag)
+            .WithName("DeleteCategory")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithSummary("Delete category by ID")
+            .WithDescription("This endpoint deletes a category by its ID.")
             .RequireAuthorization();
 
     }
