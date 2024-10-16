@@ -1,31 +1,35 @@
 using FinanceApp.Application.Contracts.Identity;
 using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Wallet;
+using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
 using FinanceApp.Domain.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace FinanceApp.Application.Features.Wallets.Commands;
+namespace FinanceApp.Application.Features.Wallets.Commands.UpdateWallet;
 
-public class CreateWalletCommandHandler(
+public class UpdateWalletCommandHandler(
     IWalletRepository walletRepository,
     UserManager<User> userManager,
     IAuthService authService)
-    : ICommandHandler<CreateWalletCommand, WalletDto>
+    : ICommandHandler<UpdateWalletCommand, WalletDto>
 {
-    public async Task<WalletDto> Handle(CreateWalletCommand request, CancellationToken cancellationToken)
+    public async Task<WalletDto> Handle(UpdateWalletCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
-        var wallet = new Wallet
-        {
-            Name = request.Name,
-            Currency = request.Currency,
-            UserId = user.Id
-        };
+        var wallet = await walletRepository.Get(user.Id, request.Id, cancellationToken);
 
-        await walletRepository.Create(wallet, cancellationToken);
+        if (wallet.UserId != user.Id)
+        {
+            throw new UnauthorizedAccessException("You do not have access to this wallet.");
+        }
+
+        wallet.Name = request.Name;
+
+        await walletRepository.Update(wallet, cancellationToken);
 
         return new WalletDto
         {

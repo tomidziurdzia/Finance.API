@@ -1,7 +1,7 @@
 using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Wallet;
 
-namespace FinanceApp.Application.Features.Wallets.Queries.GetById;
+namespace FinanceApp.Application.Features.Wallets.Queries.GetWalletById;
 
 public class GetWalletQuery : IQuery<WalletDto>
 {

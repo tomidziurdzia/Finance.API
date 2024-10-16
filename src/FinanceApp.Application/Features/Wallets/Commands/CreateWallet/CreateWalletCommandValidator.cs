@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace FinanceApp.Application.Features.Wallets.Commands;
+namespace FinanceApp.Application.Features.Wallets.Commands.CreateWallet;
 
 public class CreateWalletCommandValidator : AbstractValidator<CreateWalletCommand>
 {

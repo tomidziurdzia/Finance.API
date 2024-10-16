@@ -5,26 +5,33 @@ using FinanceApp.Domain.Models;
 using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
-namespace FinanceApp.Application.Features.Wallets.Queries.GetAll;
+namespace FinanceApp.Application.Features.Wallets.Commands.CreateWallet;
 
-public class GetWalletsQueryHandler(
+public class CreateWalletCommandHandler(
     IWalletRepository walletRepository,
     UserManager<User> userManager,
     IAuthService authService)
-    : IQueryHandler<GetWalletsQuery, List<WalletDto>>
+    : ICommandHandler<CreateWalletCommand, WalletDto>
 {
-    public async Task<List<WalletDto>> Handle(GetWalletsQuery request, CancellationToken cancellationToken)
+    public async Task<WalletDto> Handle(CreateWalletCommand request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
-        var wallets = await walletRepository.GetAll(user.Id, cancellationToken);
+        var wallet = new Wallet
+        {
+            Name = request.Name,
+            Currency = request.Currency,
+            UserId = user.Id
+        };
 
-        return wallets.Select(wallet => new WalletDto
+        await walletRepository.Create(wallet, cancellationToken);
+
+        return new WalletDto
         {
             Id = wallet.Id,
             Name = wallet.Name,
             Currency = wallet.Currency.ToString(),
-        }).ToList();
+        };
     }
 }
