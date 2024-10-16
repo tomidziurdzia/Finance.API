@@ -19,7 +19,7 @@ public class CategoryEndpoints : ICarterModule
         
         categoryGroup.MapGet("/", async (IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetAllQuery());
+                var result = await mediator.Send(new GetCategoriesQuery());
 
                 return Results.Ok(result);
             })
@@ -34,7 +34,7 @@ public class CategoryEndpoints : ICarterModule
         
         categoryGroup.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetByIdQuery(id));
+                var result = await mediator.Send(new GetCategoryQuery(id));
 
                 return Results.Ok(result);
             })
