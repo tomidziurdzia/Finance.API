@@ -18,6 +18,7 @@ public static class DependencyInjection
     {
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<ICategoriesRepository, CategoriesRepository>();
+        services.AddTransient<IWalletRepository, WalletRepository>();
 
         services.AddDbContext<ApplicationDbContext>(options => 
             options.UseNpgsql(configuration.GetConnectionString("DatabaseLocalhost"),

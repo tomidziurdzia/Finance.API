@@ -4,7 +4,7 @@ namespace FinanceApp.Application.DTOs.Wallet;
 
 public class WalletDto
 {
+    public Guid? Id { get; set; }
     public string Name { get; set; }
-    public string UserId { get; set; }
-    public Currency Currency { get; set; }
+    public string Currency { get; set; }
 }
