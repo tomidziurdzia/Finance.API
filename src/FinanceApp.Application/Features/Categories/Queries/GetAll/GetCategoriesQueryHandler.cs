@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FinanceApp.Application.Features.Categories.Queries.GetAll;
 
-public class GetAllQueryHandler(ICategoriesRepository repository, IAuthService authService, UserManager<User> userManager) : IQueryHandler<GetAllQuery, List<CategoryDto>>
+public class GetCategoriesQueryHandler(ICategoriesRepository repository, IAuthService authService, UserManager<User> userManager) : IQueryHandler<GetCategoriesQuery, List<CategoryDto>>
 {
-    public async Task<List<CategoryDto>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+    public async Task<List<CategoryDto>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
