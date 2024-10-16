@@ -1,36 +1,30 @@
 using FinanceApp.Application.Contracts.Identity;
 using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Wallet;
-using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
 using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
-namespace FinanceApp.Application.Features.Wallets.Queries.GetById;
+namespace FinanceApp.Application.Features.Wallets.Queries.GetWallets;
 
-public class GetWalletQueryHandler(
+public class GetWalletsQueryHandler(
     IWalletRepository walletRepository,
     UserManager<User> userManager,
     IAuthService authService)
-    : IQueryHandler<GetWalletQuery, WalletDto>
+    : IQueryHandler<GetWalletsQuery, List<WalletDto>>
 {
-    public async Task<WalletDto> Handle(GetWalletQuery request, CancellationToken cancellationToken)
+    public async Task<List<WalletDto>> Handle(GetWalletsQuery request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
-        var wallet = await walletRepository.Get(user.Id, request.WalletId, cancellationToken);
+        var wallets = await walletRepository.GetAll(user.Id, cancellationToken);
 
-        if (wallet == null)
-        {
-            throw new NotFoundException(nameof(wallet), request.WalletId);
-        }
-
-        return new WalletDto
+        return wallets.Select(wallet => new WalletDto
         {
             Id = wallet.Id,
             Name = wallet.Name,
             Currency = wallet.Currency.ToString(),
-        };
+        }).ToList();
     }
 }

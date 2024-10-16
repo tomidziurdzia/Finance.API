@@ -3,7 +3,7 @@ using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Wallet;
 using FinanceApp.Domain.Models.Enums;
 
-namespace FinanceApp.Application.Features.Wallets.Commands;
+namespace FinanceApp.Application.Features.Wallets.Commands.CreateWallet;
 
 public class CreateWalletCommand : ICommand<WalletDto>
 {
