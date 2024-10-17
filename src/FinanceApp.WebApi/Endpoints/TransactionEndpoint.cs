@@ -1,6 +1,7 @@
 using Carter;
 using FinanceApp.Application.DTOs.Transaction;
 using FinanceApp.Application.Features.Transactions.Commands.CreateTransaction;
+using FinanceApp.Application.Features.Transactions.Commands.UpdateTransaction;
 using FinanceApp.Application.Features.Transactions.Queries.GetAll;
 using FinanceApp.Application.Features.Transactions.Queries.GetTransactionById;
 using MediatR;
@@ -47,6 +48,23 @@ public class TransactionEndpoint : ICarterModule
             .Produces<TransactionDto>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
+
+        transactionGroup.MapPut("/{transactionId:guid}", async (Guid transactionId, UpdateTransactionCommand command, IMediator mediator) =>
+            {
+                if (transactionId != command.TransactionId) return Results.BadRequest("Transaction ID mismatch");
+
+                var updatedTransaction = await mediator.Send(command);
+
+                return Results.Ok(updatedTransaction);
+            })
+            .WithTags(OpenApiTag)
+            .WithName("UpdateTransaction")
+            .Produces<TransactionDto>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithSummary("Update a transaction")
+            .WithDescription("This endpoint allows updating the wallet, category, amount, type, and description of a transaction and returns the updated transaction.")
             .RequireAuthorization();
 
     }
