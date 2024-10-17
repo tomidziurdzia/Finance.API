@@ -19,6 +19,7 @@ public static class DependencyInjection
         services.AddTransient<IAuthService, AuthService>();
         services.AddTransient<ICategoryRepository, CategoryRepository>();
         services.AddTransient<IWalletRepository, WalletRepository>();
+        services.AddTransient<ITransactionRepository, TransactionRepository>();
 
         services.AddDbContext<ApplicationDbContext>(options => 
             options.UseNpgsql(configuration.GetConnectionString("DatabaseSupabase"),

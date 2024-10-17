@@ -34,7 +34,6 @@ public class CreateCategoryCommandHandler(
             Id = category.Id,
             Name = category.Name,
             Description = category.Description,
-            UserId = category.UserId,
             Type = category.Type.ToString()
         };
     }

@@ -26,7 +26,6 @@ public class GetCategoryQueryHandler(ICategoryRepository repository, IAuthServic
             Name = category.Name,
             Type = category.Type.ToString(),
             Description = category.Description,
-            UserId = category.UserId
         };
     }
 }

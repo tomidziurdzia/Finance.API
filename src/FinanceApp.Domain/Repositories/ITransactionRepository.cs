@@ -2,7 +2,7 @@ using FinanceApp.Domain.Models;
 
 namespace FinanceApp.Domain.Repositories;
 
-public interface ITransactionsRepository
+public interface ITransactionRepository
 {
     Task<Transaction> Get(string userId, Guid id, CancellationToken cancellationToken);
     Task<List<Transaction>> GetAll(string userId, CancellationToken cancellationToken);
