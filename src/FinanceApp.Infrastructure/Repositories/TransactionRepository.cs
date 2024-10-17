@@ -12,10 +12,10 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
     {
         try
         {
-            var transaction = await context.Transactions!.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
-            if(transaction == null) throw new NotFoundException(nameof(Transaction), id);
-
-            return transaction;
+            return await context.Transactions
+                .Include(t => t.Wallet)
+                .Include(t => t.Category)
+                .FirstOrDefaultAsync(t => t.Id == id, cancellationToken)!;
         }
         catch (Exception ex)
         {
@@ -27,9 +27,11 @@ public class TransactionRepository(ApplicationDbContext context) : ITransactionR
     {
         try
         {
-            var transactions = context.Transactions!.Where(u => u.User!.Id == userId).Include(u => u.User).AsQueryable();
-
-            return await transactions.ToListAsync(cancellationToken);
+            return await context.Transactions
+                .Include(t => t.Wallet) 
+                .Include(t => t.Category)
+                .Where(t => t.UserId == userId)
+                .ToListAsync(cancellationToken);
         }
         catch (Exception ex)
         {
