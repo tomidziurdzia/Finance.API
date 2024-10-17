@@ -54,9 +54,28 @@ namespace FinanceApp.Infrastructure.Data
                 .HasForeignKey(u => u.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<Transaction>()
+                .HasOne(t => t.User)
+                .WithMany(u => u.Transactions)
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<Transaction>()
+                .HasOne(t => t.Wallet)
+                .WithMany(w => w.Transactions)
+                .HasForeignKey(t => t.WalletId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<Transaction>()
+                .HasOne(t => t.Category)
+                .WithMany(c => c.Transactions)
+                .HasForeignKey(t => t.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
         
         public DbSet<Category>? Categories { get; set; }
         public DbSet<Wallet>? Wallets { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }
