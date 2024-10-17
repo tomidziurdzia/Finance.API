@@ -12,4 +12,5 @@ public class Category : Entity
     public User? User { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public CategoryType Type { get; set; }
+    public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }
