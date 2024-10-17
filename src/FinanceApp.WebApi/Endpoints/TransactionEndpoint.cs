@@ -1,6 +1,7 @@
 using Carter;
 using FinanceApp.Application.DTOs.Transaction;
 using FinanceApp.Application.Features.Transactions.Commands.CreateTransaction;
+using FinanceApp.Application.Features.Transactions.Commands.DeleteTransaction;
 using FinanceApp.Application.Features.Transactions.Commands.UpdateTransaction;
 using FinanceApp.Application.Features.Transactions.Queries.GetAll;
 using FinanceApp.Application.Features.Transactions.Queries.GetTransactionById;
@@ -65,6 +66,20 @@ public class TransactionEndpoint : ICarterModule
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Update a transaction")
             .WithDescription("This endpoint allows updating the wallet, category, amount, type, and description of a transaction and returns the updated transaction.")
+            .RequireAuthorization();
+
+        transactionGroup.MapDelete("/{transactionId:guid}", async (Guid transactionId, IMediator mediator) =>
+            {
+                await mediator.Send(new DeleteTransactionCommand(transactionId));
+
+                return Results.NoContent();
+            })
+            .WithTags(OpenApiTag)
+            .WithName("DeleteTransaction")
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithSummary("Delete a transaction")
+            .WithDescription("This endpoint deletes a transaction by its ID.")
             .RequireAuthorization();
 
     }
