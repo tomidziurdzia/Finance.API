@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Infrastructure.Repositories;
 
-public class TransactionRepository(ApplicationDbContext context) : ITransactionsRepository
+public class TransactionRepository(ApplicationDbContext context) : ITransactionRepository
 {
     public async Task<Transaction> Get(string userId, Guid id, CancellationToken cancellationToken)
     {
