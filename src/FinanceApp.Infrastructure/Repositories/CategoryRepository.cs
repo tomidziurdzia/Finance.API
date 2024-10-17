@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApp.Infrastructure.Repositories;
 
-public class CategoriesRepository(ApplicationDbContext context) : ICategoriesRepository
+public class CategoryRepository(ApplicationDbContext context) : ICategoryRepository
 {
     public async Task<List<Category>> GetDefaultCategoriesAsync()
     {
