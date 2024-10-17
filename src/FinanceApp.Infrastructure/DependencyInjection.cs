@@ -21,7 +21,7 @@ public static class DependencyInjection
         services.AddTransient<IWalletRepository, WalletRepository>();
 
         services.AddDbContext<ApplicationDbContext>(options => 
-            options.UseNpgsql(configuration.GetConnectionString("DatabaseLocalhost"),
+            options.UseNpgsql(configuration.GetConnectionString("DatabaseSupabase"),
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
             )
         );
