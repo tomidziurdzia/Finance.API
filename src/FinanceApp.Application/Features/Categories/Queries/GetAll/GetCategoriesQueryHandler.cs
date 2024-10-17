@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FinanceApp.Application.Features.Categories.Queries.GetAll;
 
-public class GetCategoriesQueryHandler(ICategoriesRepository repository, IAuthService authService, UserManager<User> userManager) : IQueryHandler<GetCategoriesQuery, List<CategoryDto>>
+public class GetCategoriesQueryHandler(ICategoryRepository repository, IAuthService authService, UserManager<User> userManager) : IQueryHandler<GetCategoriesQuery, List<CategoryDto>>
 {
     public async Task<List<CategoryDto>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {

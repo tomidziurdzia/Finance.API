@@ -17,7 +17,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IAuthService, AuthService>();
-        services.AddTransient<ICategoriesRepository, CategoriesRepository>();
+        services.AddTransient<ICategoryRepository, CategoryRepository>();
         services.AddTransient<IWalletRepository, WalletRepository>();
 
         services.AddDbContext<ApplicationDbContext>(options => 

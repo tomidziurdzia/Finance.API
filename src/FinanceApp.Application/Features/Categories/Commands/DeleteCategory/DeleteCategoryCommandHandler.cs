@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 namespace FinanceApp.Application.Features.Categories.Commands.DeleteCategory;
 
 public class DeleteCategoryCommandHandler(
-    ICategoriesRepository categoriesRepository,
+    ICategoryRepository categoryRepository,
     UserManager<User> userManager,
     IAuthService authService)
     : ICommandHandler<DeleteCategoryCommand, Unit>
@@ -19,10 +19,10 @@ public class DeleteCategoryCommandHandler(
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
-        var category = await categoriesRepository.Get(user.Id, request.Id, cancellationToken);
+        var category = await categoryRepository.Get(user.Id, request.Id, cancellationToken);
         if (category == null) throw new NotFoundException(nameof(Category), request.Id);
 
-        await categoriesRepository.Delete(category, cancellationToken);
+        await categoryRepository.Delete(category, cancellationToken);
 
         return Unit.Value;
     }

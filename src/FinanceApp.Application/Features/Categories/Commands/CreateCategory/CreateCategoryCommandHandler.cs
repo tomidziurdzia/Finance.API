@@ -10,7 +10,7 @@ namespace FinanceApp.Application.Features.Categories.Commands.CreateCategory;
 public class CreateCategoryCommandHandler(
     IAuthService authService,
     UserManager<User> userManager,
-    ICategoriesRepository repository)
+    ICategoryRepository repository)
     : ICommandHandler<CreateCategoryCommand, CategoryDto>
 {
     public async Task<CategoryDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)

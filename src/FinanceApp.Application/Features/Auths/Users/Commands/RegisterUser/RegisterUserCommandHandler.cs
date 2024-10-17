@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FinanceApp.Application.Features.Auths.Users.Commands.RegisterUser;
 
-public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthService authService, ICategoriesRepository categoriesRepository)
+public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthService authService, ICategoryRepository categoryRepository)
     : ICommandHandler<RegisterUserCommand, AuthResponseDto>
 {
     public async Task<AuthResponseDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -29,7 +29,7 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
         if (!result.Succeeded) throw new Exception("User could not be registered");
         try
         {
-            var defaultCategories = await categoriesRepository.GetDefaultCategoriesAsync();
+            var defaultCategories = await categoryRepository.GetDefaultCategoriesAsync();
 
             var userCategories = defaultCategories.Select(category => new Category
             {
@@ -39,7 +39,7 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
                 UserId = user.Id,
             }).ToList();
                 
-            await categoriesRepository.AddCategoriesToUser(userCategories);
+            await categoryRepository.AddCategoriesToUser(userCategories);
         }
         catch (Exception ex)
         {
