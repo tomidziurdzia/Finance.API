@@ -12,7 +12,10 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
     {
         try
         {
-            var wallet = await context.Wallets!.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
+            var wallet = await context.Wallets!
+                .Include(w => w.Transactions)
+                .ThenInclude(t => t.Category)
+                .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
             if(wallet == null) throw new NotFoundException(nameof(Wallet), id);
 
             return wallet;
@@ -27,9 +30,9 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
     {
         try
         {
-            var wallets = context.Wallets!.Where(u => u.User!.Id == userId).Include(u => u.User).AsQueryable();
-
-            return await wallets.ToListAsync(cancellationToken);
+            return await context.Wallets!
+                .Where(t => t.UserId == userId)
+                .ToListAsync(cancellationToken);
         }
         catch (Exception ex)
         {

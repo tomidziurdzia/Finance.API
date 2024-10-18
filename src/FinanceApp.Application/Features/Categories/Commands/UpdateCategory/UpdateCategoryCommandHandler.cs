@@ -24,7 +24,8 @@ public class UpdateCategoryCommandHandler(
         if (category == null) throw new NotFoundException(nameof(Category), request.Id);
 
         category.Name = request.Name;
-        category.Description = request.Description;
+        category.Description = request.Description ?? category.Description;
+        category.Type = request.Type;
 
         await categoryRepository.Update(category, cancellationToken);
 

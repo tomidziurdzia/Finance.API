@@ -58,7 +58,7 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
     {
         try
         {
-            var categories = context.Categories!.Where(u => u.User!.Id == userId).Include(u => u.User).AsQueryable();
+            var categories = context.Categories!.Where(u => u.User!.Id == userId);
 
             return await categories.ToListAsync(cancellationToken);
         }
