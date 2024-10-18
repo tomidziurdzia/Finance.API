@@ -1,5 +1,6 @@
 using Carter;
 using FinanceApp.Application.DTOs.Wallet;
+using FinanceApp.Application.Features.Transactions.Commands.TransferBetweenAccount;
 using FinanceApp.Application.Features.Wallets.Commands;
 using FinanceApp.Application.Features.Wallets.Commands.CreateWallet;
 using FinanceApp.Application.Features.Wallets.Commands.DeleteWallet;
@@ -83,6 +84,20 @@ public class WalletEndpoint : ICarterModule
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
+
+        walletGroup.MapPost("/transfer", async (TransactionBetweenAccountCommand command, IMediator mediator) =>
+            {
+                await mediator.Send(command);
+                return Results.NoContent();
+            })
+            .WithTags("Wallets")
+            .WithName("TransferFunds")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .WithSummary("Transfer funds between wallets")
+            .WithDescription("Transfers a specified amount from one wallet to another.")
             .RequireAuthorization();
 
     }

@@ -3,6 +3,7 @@ using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Transaction;
 using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
+using FinanceApp.Domain.Models.Enums;
 using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -39,7 +40,7 @@ public class CreateTransactionCommandHandler(
             CategoryId = category.Id,
             UserId = user.Id,
             Type = request.Type,
-            Amount = request.Amount,
+            Amount = request.Type == TransactionType.Income ? request.Amount : -request.Amount,
             Description = request.Description
         };
         

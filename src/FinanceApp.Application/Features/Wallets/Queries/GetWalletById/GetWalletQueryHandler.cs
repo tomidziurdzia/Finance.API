@@ -3,7 +3,6 @@ using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Wallet;
 using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
-using FinanceApp.Domain.Models.Enums;
 using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -38,8 +37,7 @@ public class GetWalletQueryHandler(
                 CreatedAt = t.CreatedAt
             }).ToList();
         
-        var total = wallet.Transactions
-            .Sum(t => t.Type == TransactionType.Income ? t.Amount : -t.Amount);
+        var total = wallet.Transactions.Sum(t => t.Amount);
 
         return new WalletDto
         {
