@@ -37,6 +37,10 @@ namespace FinanceApp.Infrastructure.Data
             return base.SaveChangesAsync(cancellationToken);
         }
         
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -73,9 +77,5 @@ namespace FinanceApp.Infrastructure.Data
                 .HasForeignKey(t => t.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
-        
-        public DbSet<Category>? Categories { get; set; }
-        public DbSet<Wallet>? Wallets { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
     }
 }

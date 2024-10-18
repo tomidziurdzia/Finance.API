@@ -5,7 +5,6 @@ namespace FinanceApp.Domain.Models;
 
 public class Transaction : Entity
 {
-    public Guid Id { get; set; }
     public Guid WalletId { get; set; }
     public Wallet Wallet { get; set; }
     public Guid CategoryId { get; set; }
