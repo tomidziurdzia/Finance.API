@@ -1,7 +1,4 @@
-﻿using FinanceApp.Application.DTOs.Category;
-using FinanceApp.Domain.Models;
-
-namespace FinanceApp.Application.DTOs.User;
+﻿namespace FinanceApp.Application.DTOs.User;
 
 public class AuthResponseDto
 {

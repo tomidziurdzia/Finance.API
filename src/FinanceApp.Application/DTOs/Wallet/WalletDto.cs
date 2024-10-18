@@ -1,5 +1,3 @@
-using FinanceApp.Domain.Models.Enums;
-
 namespace FinanceApp.Application.DTOs.Wallet;
 
 public class WalletDto
