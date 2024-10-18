@@ -7,7 +7,7 @@ namespace FinanceApp.Application.Features.Transactions.Commands.CreateTransactio
 public class CreateTransactionCommand : ICommand<TransactionDto>
 {
     public Guid WalletId { get; set; }
-    public Guid CategoryId { get; set; }
+    public Guid? CategoryId { get; set; }
     public TransactionType Type { get; set; }
     public decimal Amount { get; set; }
     public string? Description { get; set; }

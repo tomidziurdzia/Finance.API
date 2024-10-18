@@ -32,6 +32,7 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
         {
             return await context.Wallets!
                 .Where(t => t.UserId == userId)
+                .Include(w => w.Transactions)
                 .ToListAsync(cancellationToken);
         }
         catch (Exception ex)

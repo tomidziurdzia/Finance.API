@@ -1,5 +1,3 @@
-using FinanceApp.Application.DTOs.Transaction;
-
 namespace FinanceApp.Application.DTOs.Wallet;
 
 public class WalletDto

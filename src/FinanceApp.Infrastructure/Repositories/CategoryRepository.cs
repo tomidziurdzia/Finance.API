@@ -40,7 +40,7 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
         }
     }
 
-    public async Task<Category> Get(string userId, Guid id, CancellationToken cancellationToken)
+    public async Task<Category> Get(string userId, Guid? id, CancellationToken cancellationToken)
     {
         try
         {

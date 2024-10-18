@@ -3,6 +3,7 @@ using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Transaction;
 using FinanceApp.Application.Exceptions;
 using FinanceApp.Domain.Models;
+using FinanceApp.Domain.Models.Enums;
 using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -27,19 +28,23 @@ public class CreateTransactionCommandHandler(
             throw new NotFoundException(nameof(wallet), request.WalletId);
         }
 
-        var category = await categoryRepository.Get(user.Id, request.CategoryId, cancellationToken);
-        if (category == null)
+        Category? category = null;
+        if (request.CategoryId.HasValue)
         {
-            throw new NotFoundException(nameof(category), request.CategoryId);
+            category = await categoryRepository.Get(user.Id, request.CategoryId.Value, cancellationToken);
+            if (category == null)
+            {
+                throw new NotFoundException(nameof(category), request.CategoryId.Value);
+            }
         }
 
         var transaction = new Transaction
         {
             WalletId = wallet.Id,
-            CategoryId = category.Id,
+            CategoryId = category?.Id,
             UserId = user.Id,
             Type = request.Type,
-            Amount = request.Amount,
+            Amount = request.Type == TransactionType.Income ? request.Amount : -request.Amount,
             Description = request.Description
         };
         
@@ -50,9 +55,9 @@ public class CreateTransactionCommandHandler(
             Id = transaction.Id,
             WalletId = transaction.WalletId,
             WalletName = wallet.Name,
-            CategoryId = transaction.CategoryId,
-            CategoryName = category.Name!,
-            UserId = transaction.UserId,
+            CategoryId = transaction?.CategoryId,
+            CategoryName = category?.Name,
+            UserId = transaction!.UserId,
             Type = transaction.Type.ToString(),
             Amount = transaction.Amount,
             Description = transaction.Description,

@@ -20,11 +20,18 @@ public class GetWalletsQueryHandler(
 
         var wallets = await walletRepository.GetAll(user.Id, cancellationToken);
 
-        return wallets.Select(wallet => new WalletDto
+        
+        return wallets.Select(wallet => 
         {
-            Id = wallet.Id,
-            Name = wallet.Name,
-            Currency = wallet.Currency.ToString(),
+            var total = wallet.Transactions.Sum(t => t.Amount);
+
+            return new WalletDto
+            {
+                Id = wallet.Id,
+                Name = wallet.Name,
+                Currency = wallet.Currency.ToString(),
+                Total = total
+            };
         }).ToList();
     }
 }
