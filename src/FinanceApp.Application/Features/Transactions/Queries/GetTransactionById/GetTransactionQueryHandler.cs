@@ -29,9 +29,9 @@ public class GetTransactionQueryHandler(
         {
             Id = transaction.Id,
             WalletId = transaction.WalletId,
-            WalletName = transaction.Wallet?.Name!,
+            WalletName = transaction.Wallet.Name,
             CategoryId = transaction.CategoryId,
-            CategoryName = transaction.Category?.Name!,
+            CategoryName = transaction.Category?.Name,
             UserId = transaction.UserId,
             Type = transaction.Type.ToString(),
             Amount = transaction.Amount,

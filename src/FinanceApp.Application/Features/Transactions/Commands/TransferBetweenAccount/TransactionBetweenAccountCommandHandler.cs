@@ -28,7 +28,7 @@ public class TransactionBetweenAccountCommandHandler(IWalletRepository walletRep
 
         var balanceSource = sourceWallet.Transactions
             .Where(t => t.Type == TransactionType.Income || t.Type == TransactionType.Expense)
-            .Sum(t => t.Type == TransactionType.Income ? t.Amount : -t.Amount);
+            .Sum(t => t.Amount);
         
         if (balanceSource < request.Amount)
             throw new InvalidOperationException("Insufficient funds");
@@ -37,7 +37,6 @@ public class TransactionBetweenAccountCommandHandler(IWalletRepository walletRep
         {
             WalletId = sourceWallet.Id,
             Amount = -request.Amount,
-            CategoryId = new Guid("33b2e23a-5b6e-4b62-bc4a-544c938df63f"),
             Type = TransactionType.Transfer,
             Description = "Transfer from " + targetWallet.Name,
             UserId = user.Id
@@ -47,7 +46,6 @@ public class TransactionBetweenAccountCommandHandler(IWalletRepository walletRep
         {
             WalletId = targetWallet.Id,
             Amount = request.Amount,
-            CategoryId = new Guid("33b2e23a-5b6e-4b62-bc4a-544c938df63f"),
             Type = TransactionType.Transfer,
             Description = "Transfer to " + sourceWallet.Name,
             UserId = user.Id

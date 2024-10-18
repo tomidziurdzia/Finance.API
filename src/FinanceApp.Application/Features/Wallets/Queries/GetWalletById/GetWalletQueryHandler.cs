@@ -30,7 +30,7 @@ public class GetWalletQueryHandler(
             .Select(t => new WalletTransactionsDto
             {
                 Id = t.Id,
-                CategoryName = t.Category.Name!,
+                CategoryName = t.Category?.Name,
                 Type = t.Type.ToString(),
                 Amount = t.Amount,
                 Description = t.Description,
