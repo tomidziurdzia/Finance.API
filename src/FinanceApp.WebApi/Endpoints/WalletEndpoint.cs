@@ -91,7 +91,7 @@ public class WalletEndpoint : ICarterModule
                 await mediator.Send(command);
                 return Results.NoContent();
             })
-            .WithTags("Wallets")
+            .WithTags(OpenApiTag)
             .WithName("TransferFunds")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status400BadRequest)
