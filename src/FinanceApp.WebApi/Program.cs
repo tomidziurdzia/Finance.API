@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
     {
         builder
             .WithOrigins(
-                "https://financestock.vercel.app/",
+                "https://financestock.vercel.app",
                 "http://localhost:3000"
             )
             .AllowAnyMethod()
