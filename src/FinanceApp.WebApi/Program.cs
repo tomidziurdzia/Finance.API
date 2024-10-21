@@ -14,6 +14,21 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", builder =>
+    {
+        builder
+            .WithOrigins(
+                "https://financestock.vercel.app/",
+                "http://localhost:3000"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
+
 builder.Services
     .AddInfrastructureServices(builder.Configuration)
     .AddApplicationServices(builder.Configuration)
@@ -73,15 +88,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("CorsPolicy", b => b.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-    );
-    
-});
-
 builder.Services.AddMvcCore()
     .AddNewtonsoftJson(options =>
     {
@@ -97,7 +103,8 @@ if (app.Environment.IsDevelopment())
     await app.InitialiseDatabaseAsync();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+app.UseCors("AllowSpecificOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 
