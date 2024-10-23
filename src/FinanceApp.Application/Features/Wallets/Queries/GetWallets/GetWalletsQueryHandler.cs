@@ -11,17 +11,16 @@ public class GetWalletsQueryHandler(
     IWalletRepository walletRepository,
     UserManager<User> userManager,
     IAuthService authService)
-    : IQueryHandler<GetWalletsQuery, List<WalletDto>>
+    : IQueryHandler<GetWalletsQuery, WalletsDto>
 {
-    public async Task<List<WalletDto>> Handle(GetWalletsQuery request, CancellationToken cancellationToken)
+    public async Task<WalletsDto> Handle(GetWalletsQuery request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
         var wallets = await walletRepository.GetAll(user.Id, cancellationToken);
 
-        
-        return wallets.Select(wallet => 
+        var walletDtos = wallets.Select(wallet => 
         {
             var total = wallet.Transactions.Sum(t => t.Amount);
 
@@ -33,5 +32,14 @@ public class GetWalletsQueryHandler(
                 Total = total
             };
         }).ToList();
+
+        var totalGlobal = walletDtos.Sum(w => w.Total);
+
+        return new WalletsDto
+        {
+            Wallets = walletDtos,
+            Total = totalGlobal
+        };
     }
+
 }

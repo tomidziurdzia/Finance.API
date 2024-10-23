@@ -3,7 +3,7 @@ using FinanceApp.Application.DTOs.Wallet;
 
 namespace FinanceApp.Application.Features.Wallets.Queries.GetWallets;
 
-public class GetWalletsQuery : IQuery<List<WalletDto>>
+public class GetWalletsQuery : IQuery<WalletsDto>
 {
     
 }
