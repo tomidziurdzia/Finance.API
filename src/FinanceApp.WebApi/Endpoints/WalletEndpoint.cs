@@ -7,6 +7,7 @@ using FinanceApp.Application.Features.Wallets.Commands.DeleteWallet;
 using FinanceApp.Application.Features.Wallets.Commands.UpdateWallet;
 using FinanceApp.Application.Features.Wallets.Queries.GetWalletById;
 using FinanceApp.Application.Features.Wallets.Queries.GetWallets;
+using FinanceApp.Application.Features.Wallets.Queries.GetWalletsTotal;
 using MediatR;
 
 namespace FinanceApp.WebApi.Endpoints;
@@ -98,6 +99,17 @@ public class WalletEndpoint : ICarterModule
             .ProducesProblem(StatusCodes.Status404NotFound)
             .WithSummary("Transfer funds between wallets")
             .WithDescription("Transfers a specified amount from one wallet to another.")
+            .RequireAuthorization();
+
+        walletGroup.MapGet("/totals", async (IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetWalletTotalsQuery());
+                return Results.Ok(result);
+            })
+            .WithTags(OpenApiTag)
+            .WithName("GetWalletTotals")
+            .Produces<List<WalletTotalDto>>(StatusCodes.Status200OK)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
             .RequireAuthorization();
 
     }
