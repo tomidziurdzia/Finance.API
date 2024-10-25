@@ -2,6 +2,7 @@ using FinanceApp.Application.Contracts.Identity;
 using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Wallet;
 using FinanceApp.Domain.Models;
+using FinanceApp.Domain.Models.Enums;
 using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -20,18 +21,35 @@ public class GetWalletTotalsQueryHandler(
 
         var wallets = await walletRepository.GetAll(user.Id, cancellationToken);
 
-        var walletTotals = wallets.Select(wallet => new WalletTotalDto
+        var walletTotals = wallets.Select(wallet =>
         {
-            Id = wallet.Id,
-            Total = wallet.Transactions.Sum(t => t.Amount)
+            var totalIncome = wallet.Transactions
+                .Where(t => t.Type == TransactionType.Income)
+                .Sum(t => t.Amount);
+
+            var totalExpense = wallet.Transactions
+                .Where(t => t.Type == TransactionType.Expense)
+                .Sum(t => t.Amount);
+
+            return new WalletTotalDto
+            {
+                Id = wallet.Id,
+                Total = totalIncome - totalExpense,
+                Income = totalIncome,
+                Expense = totalExpense
+            };
         }).ToList();
 
         var totalSum = walletTotals.Sum(w => w.Total);
+        var totalIncomeSum = walletTotals.Sum(w => w.Income);
+        var totalExpenseSum = walletTotals.Sum(w => w.Expense);
 
         return new WalletTotalsResponseDto
         {
             Wallets = walletTotals,
-            Total = totalSum
+            Total = totalSum,
+            Income = totalIncomeSum,
+            Expense = totalExpenseSum
         };
     }
 }
