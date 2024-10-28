@@ -28,6 +28,7 @@ public class GetWalletQueryHandler(
         }
         
         var transactions = wallet.Transactions
+            .OrderByDescending(transaction => transaction.CreatedAt)
             .Select(t => new WalletTransactionsDto
             {
                 Id = t.Id,
