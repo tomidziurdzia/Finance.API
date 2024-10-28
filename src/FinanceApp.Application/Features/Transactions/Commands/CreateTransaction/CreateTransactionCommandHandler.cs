@@ -45,7 +45,8 @@ public class CreateTransactionCommandHandler(
             UserId = user.Id,
             Type = request.Type,
             Amount = request.Type == TransactionType.Income ? request.Amount : -request.Amount,
-            Description = request.Description
+            Description = request.Description,
+            CreatedAt = request.CreatedAt
         };
         
         await transactionRepository.Create(transaction, cancellationToken);
