@@ -76,6 +76,10 @@ namespace FinanceApp.Infrastructure.Data
                 .WithMany(c => c.Transactions)
                 .HasForeignKey(t => t.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+            
+            builder.Entity<Transaction>()
+                .Property(t => t.CreatedAt)
+                .HasDefaultValue(null);
         }
     }
 }

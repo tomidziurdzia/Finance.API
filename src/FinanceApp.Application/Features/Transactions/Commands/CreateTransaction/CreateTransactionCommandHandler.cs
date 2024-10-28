@@ -51,6 +51,8 @@ public class CreateTransactionCommandHandler(
         
         await transactionRepository.Create(transaction, cancellationToken);
 
+        Console.WriteLine(transaction.CreatedAt);
+
         return new TransactionDto
         {
             Id = transaction.Id,
