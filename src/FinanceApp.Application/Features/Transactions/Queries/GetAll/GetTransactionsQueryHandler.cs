@@ -20,7 +20,9 @@ public class GetTransactionsQueryHandler(
 
         var transactions = await transactionRepository.GetAll(user.Id, cancellationToken);
         
-        return transactions.Select(transaction => new TransactionDto
+        return transactions
+            .OrderByDescending(transaction => transaction.CreatedAt)
+            .Select(transaction => new TransactionDto
         {
             Id = transaction.Id,
             WalletId = transaction.WalletId,
@@ -33,6 +35,5 @@ public class GetTransactionsQueryHandler(
             Description = transaction.Description,
             CreatedAt = transaction.CreatedAt
         }).ToList();
-
     }
 }
