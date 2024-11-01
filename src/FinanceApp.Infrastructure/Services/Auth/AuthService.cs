@@ -20,7 +20,9 @@ public class AuthService(IHttpContextAccessor httpContextAccessor, IOptions<JwtS
         var claims = new List<Claim> {
             new Claim(JwtRegisteredClaimNames.NameId, user.UserName!),
             new Claim("userId", user.Id),
-            new Claim("email", user.Email!)
+            new Claim("email", user.Email!),
+            new Claim("currency", user.Currency!),
+            new Claim("locale", user.Locale!)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key!));

@@ -25,6 +25,8 @@ public class GetUserTokenQueryHandler(UserManager<User> userManager, IAuthServic
             Lastname = user.Lastname,
             Email = user.Email,
             Username = user.UserName,
+            Currency = user.Currency,
+            Locale = user.Locale,
             Token = _authService.CreateToken(user),
         };
     }

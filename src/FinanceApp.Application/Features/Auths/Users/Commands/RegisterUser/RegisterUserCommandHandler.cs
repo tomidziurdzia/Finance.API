@@ -53,6 +53,8 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
             Lastname = user.Lastname,
             Email = user.Email,
             Username = user.UserName,
+            Currency = user.Currency,
+            Locale = user.Locale,
             Token = authService.CreateToken(user),
         };
     }

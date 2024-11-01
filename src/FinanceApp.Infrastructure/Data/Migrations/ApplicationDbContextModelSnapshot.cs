@@ -120,6 +120,10 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -128,6 +132,10 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Lastname")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Locale")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")

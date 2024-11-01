@@ -35,6 +35,8 @@ public class LoginUserCommandHandler(
             Lastname = user.Lastname,
             Email = user.Email,
             Username = user.UserName,
+            Currency = user.Currency,
+            Locale = user.Locale,
             Token = authService.CreateToken(user),
         };
 

@@ -17,6 +17,8 @@ public class UpdateUserCommandHandler(UserManager<User> userManager, IAuthServic
 
         updateUser.Name = request.Name;
         updateUser.Lastname = request.Lastname;
+        updateUser.Currency = request.Currency!;
+        updateUser.Locale = request.Locale!;
 
         var result = await userManager.UpdateAsync(updateUser);
 
@@ -31,6 +33,8 @@ public class UpdateUserCommandHandler(UserManager<User> userManager, IAuthServic
             Lastname = userById.Lastname,
             Email = userById.Email,
             Username = userById.UserName,
+            Currency = userById.Currency,
+            Locale = userById.Locale,
             Token = authService.CreateToken(userById),
         };
     }
