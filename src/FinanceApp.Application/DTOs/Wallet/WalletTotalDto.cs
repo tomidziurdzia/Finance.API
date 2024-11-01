@@ -6,6 +6,7 @@ public class WalletTotalDto
     public decimal Total { get; set; }
     public decimal Income { get; set; }
     public decimal Expense { get; set; }
+    public decimal Investment { get; set; }
 }
 
 public class WalletTotalsResponseDto
@@ -14,4 +15,5 @@ public class WalletTotalsResponseDto
     public decimal Total { get; set; }
     public decimal Income { get; set; }
     public decimal Expense { get; set; }
+    public decimal Investment { get; set; }
 }

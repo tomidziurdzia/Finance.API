@@ -30,26 +30,33 @@ public class GetWalletTotalsQueryHandler(
             var totalExpense = wallet.Transactions
                 .Where(t => t.Type == TransactionType.Expense)
                 .Sum(t => t.Amount);
+            
+            var totalInvestment = wallet.Transactions
+                .Where(t => t.Type == TransactionType.Investment)
+                .Sum(t => t.Amount);
 
             return new WalletTotalDto
             {
                 Id = wallet.Id,
                 Total = totalIncome - totalExpense,
                 Income = totalIncome,
-                Expense = totalExpense
+                Expense = totalExpense,
+                Investment = -totalInvestment
             };
         }).ToList();
 
         var totalSum = walletTotals.Sum(w => w.Total);
         var totalIncomeSum = walletTotals.Sum(w => w.Income);
         var totalExpenseSum = walletTotals.Sum(w => w.Expense);
+        var totalInvestmentSum = walletTotals.Sum(w => w.Investment);
 
         return new WalletTotalsResponseDto
         {
             Wallets = walletTotals,
             Total = totalSum,
             Income = totalIncomeSum,
-            Expense = totalExpenseSum
+            Expense = totalExpenseSum,
+            Investment = -totalInvestmentSum
         };
     }
 }

@@ -46,6 +46,10 @@ public class GetWalletQueryHandler(
         var totalExpense = wallet.Transactions
             .Where(t => t.Type == TransactionType.Expense)
             .Sum(t => t.Amount);
+        
+        var totalInvestment = wallet.Transactions
+            .Where(t => t.Type == TransactionType.Investment)
+            .Sum(t => t.Amount);
 
         var total = wallet.Transactions.Sum(t => t.Amount);
 
@@ -57,7 +61,8 @@ public class GetWalletQueryHandler(
             Transactions = transactions,
             Total = total,
             Income = totalIncome,
-            Expense = totalExpense
+            Expense = totalExpense,
+            Investment = -totalInvestment
         };
     }
 }
