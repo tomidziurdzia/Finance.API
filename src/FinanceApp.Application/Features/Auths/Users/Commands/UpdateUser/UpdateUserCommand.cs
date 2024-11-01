@@ -7,5 +7,6 @@ public class UpdateUserCommand : ICommand<AuthResponseDto>
 {
     public string? Name { get; set; }
     public string? Lastname { get; set; }
-
+    public string? Currency { get; set; }
+    public string? Locale { get; set; }
 }

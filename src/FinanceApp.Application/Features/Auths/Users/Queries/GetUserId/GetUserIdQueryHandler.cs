@@ -24,6 +24,8 @@ public class GetUserIdQueryHandler(UserManager<User> userManager) : IQueryHandle
             Lastname = user.Lastname,
             Email = user.Email,
             Username = user.UserName,
+            Currency = user.Currency,
+            Locale = user.Locale
         };   
     }
 }
