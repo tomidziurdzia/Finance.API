@@ -3,6 +3,7 @@ using System;
 using FinanceApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241105223344_NotNullCategory")]
+    partial class NotNullCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,6 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ParentType")
@@ -72,7 +74,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -117,7 +119,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -162,7 +164,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -460,8 +462,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.HasOne("FinanceApp.Domain.Models.Category", "Category")
                         .WithMany("Expenses")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FinanceApp.Domain.Models.User", "User")
                         .WithMany("Expense")
@@ -487,8 +488,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.HasOne("FinanceApp.Domain.Models.Category", "Category")
                         .WithMany("Incomes")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FinanceApp.Domain.Models.User", "User")
                         .WithMany("Income")
@@ -514,8 +514,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.HasOne("FinanceApp.Domain.Models.Category", "Category")
                         .WithMany("Investments")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FinanceApp.Domain.Models.User", "User")
                         .WithMany("Investment")

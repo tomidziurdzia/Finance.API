@@ -15,4 +15,5 @@ public enum CategoryParent
     Inversión = 10,
     Ahorro = 11,
     MovimientosExcluidos = 12,
+    Transfer = 13
 }

@@ -28,7 +28,7 @@ public class GetExpensesQueryHandler(
                 WalletId = expense.WalletId,
                 WalletName = expense.Wallet.Name,
                 CategoryId = expense.CategoryId,
-                CategoryName = expense.Category?.Name,
+                CategoryName = expense.Category.Name,
                 UserId = expense.UserId,
                 Amount = expense.Amount,
                 Description = expense.Description,

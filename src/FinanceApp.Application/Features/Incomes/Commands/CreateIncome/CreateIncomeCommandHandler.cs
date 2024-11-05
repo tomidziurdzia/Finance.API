@@ -27,7 +27,7 @@ public class CreateIncomeCommandHandler(
             throw new NotFoundException(nameof(wallet), request.WalletId);
         }
 
-        Category? category = null;
+        Category category = null;
         if (request.CategoryId.HasValue)
         {
             category = await categoryRepository.Get(user.Id, request.CategoryId.Value, cancellationToken);
@@ -55,7 +55,7 @@ public class CreateIncomeCommandHandler(
             WalletId = income.WalletId,
             WalletName = wallet.Name,
             CategoryId = income.CategoryId,
-            CategoryName = category?.Name,
+            CategoryName = category.Name,
             UserId = income.UserId,
             Amount = income.Amount,
             Description = income.Description,

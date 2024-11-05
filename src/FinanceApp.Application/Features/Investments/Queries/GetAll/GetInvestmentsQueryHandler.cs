@@ -28,7 +28,7 @@ public class GetInvestmentsQueryHandler(
                 WalletId = investment.WalletId,
                 WalletName = investment.Wallet.Name,
                 CategoryId = investment.CategoryId,
-                CategoryName = investment.Category?.Name,
+                CategoryName = investment.Category.Name,
                 UserId = investment.UserId,
                 Amount = investment.Amount,
                 Description = investment.Description,

@@ -6,9 +6,9 @@ namespace FinanceApp.Domain.Models;
 
 public class Category : Entity
 {
-    public string? Name { get; set; }
+    public string Name { get; set; }
     public string UserId { get; set; }
-    public User? User { get; set; }
+    public User User { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public CategoryParent ParentType { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter))]

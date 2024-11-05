@@ -27,7 +27,7 @@ public class CreateInvestmentCommandHandler(
             throw new NotFoundException(nameof(Wallet), request.WalletId);
         }
 
-        Category? category = null;
+        Category category = null;
         if (request.CategoryId.HasValue)
         {
             category = await categoryRepository.Get(user.Id, request.CategoryId.Value, cancellationToken);
@@ -55,7 +55,7 @@ public class CreateInvestmentCommandHandler(
             WalletId = investment.WalletId,
             WalletName = wallet.Name,
             CategoryId = investment.CategoryId,
-            CategoryName = category?.Name,
+            CategoryName = category.Name,
             UserId = investment.UserId,
             Amount = investment.Amount,
             Description = investment.Description,
