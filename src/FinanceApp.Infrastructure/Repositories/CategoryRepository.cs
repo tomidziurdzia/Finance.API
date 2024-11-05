@@ -9,24 +9,6 @@ namespace FinanceApp.Infrastructure.Repositories;
 
 public class CategoryRepository(ApplicationDbContext context) : ICategoryRepository
 {
-    public async Task<List<Category>> GetDefaultCategoriesAsync()
-    {
-        var categories = new List<Category>
-        {
-            new Category { Name = "Salary", Description = "Monthly salary or income from employment.", Type = CategoryType.Income},
-            new Category { Name = "Groceries", Description = "Expenses for daily food and household items." , Type = CategoryType.Expense},
-            new Category { Name = "Rent", Description = "Monthly payment for housing or rent.", Type = CategoryType.Expense},
-            new Category { Name = "Utilities", Description = "Bills for electricity, water, gas, and internet." , Type = CategoryType.Expense},
-            new Category { Name = "Transportation", Description = "Daily transportation costs like fuel, public transport, or car maintenance." , Type = CategoryType.Expense},
-            new Category { Name = "Dining Out", Description = "Expenses on eating out at restaurants or cafes." , Type = CategoryType.Expense},
-            new Category { Name = "Entertainment", Description = "Leisure activities such as movies, events, and hobbies." , Type = CategoryType.Expense},
-            new Category { Name = "Healthcare", Description = "Medical expenses like doctor visits, medication, and insurance." , Type = CategoryType.Expense},
-            new Category { Name = "Savings", Description = "Money set aside for future use or emergencies." , Type = CategoryType.Investment},
-            new Category { Name = "Subscriptions", Description = "Recurring payments for services like streaming or gym memberships." , Type = CategoryType.Expense}
-        };
-        return await Task.FromResult(categories);
-    }
-
     public async Task AddCategoriesToUser(IEnumerable<Category> categories)
     {
         try
@@ -107,4 +89,62 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
             throw new Exception($"Error deleting category: {ex.Message}");
         }
     }
+    
+    public async Task<List<Category>> GetDefaultCategoriesAsync()
+    {
+       var categories = new List<Category>
+        {
+            // Income
+            new Category { Name = "Otros nómina y prestaciones", ParentType = CategoryParent.NóminaYOtrasPrestaciones, Type = CategoryType.Income },
+            new Category { Name = "Pensión alimenticia", ParentType = CategoryParent.NóminaYOtrasPrestaciones, Type = CategoryType.Income },
+            new Category { Name = "Prestación por desempleo", ParentType = CategoryParent.NóminaYOtrasPrestaciones, Type = CategoryType.Income },
+            new Category { Name = "Abono de financiación", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+            new Category { Name = "Ingreso Bizum", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+            new Category { Name = "Ingresos de cheques", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+            new Category { Name = "Ingresos de efectivo", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+            new Category { Name = "Ingresos de impuestos", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+            new Category { Name = "Ingresos de otras entidades", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+            new Category { Name = "Ingresos por alquiler", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+            new Category { Name = "Otros ingresos (otros)", ParentType = CategoryParent.OtrosIngresos, Type = CategoryType.Income },
+
+            // Expense
+            new Category { Name = "Agua", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Alquiler trastero y garaje", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Alquiler vivienda", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Comunidad", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Decoración y mobiliario", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Hipoteca", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Hogar (otros)", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Impuestos hogar", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Limpieza", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Luz y gas", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Mantenimiento del hogar", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Seguridad y alarmas", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Seguro de hogar", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Teléfono, TV e internet", ParentType = CategoryParent.Hogar, Type = CategoryType.Expense },
+            new Category { Name = "Gasolina y combustible", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Impuestos del vehículo", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Mantenimiento de vehículo", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Multas", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Parking y garaje", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Peajes", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Préstamo de vehículo", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Recarga vehículo eléctrico", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Seguro de coche y moto", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Taxi y Carsharing", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Transporte público", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+            new Category { Name = "Vehículo y transporte (otros)", ParentType = CategoryParent.VehículoYTransporte, Type = CategoryType.Expense },
+
+            // Investment
+            new Category { Name = "Acciones", ParentType = CategoryParent.Inversión, Type = CategoryType.Investment },
+            new Category { Name = "Fondos de inversión", ParentType = CategoryParent.Inversión, Type = CategoryType.Investment },
+            new Category { Name = "Otras inversiones", ParentType = CategoryParent.Inversión, Type = CategoryType.Investment },
+            new Category { Name = "Planes de pensiones", ParentType = CategoryParent.Inversión, Type = CategoryType.Investment },
+
+            new Category { Name = "Otros ahorros", ParentType = CategoryParent.Ahorro, Type = CategoryType.Investment },
+            new Category { Name = "Productos de ahorro", ParentType = CategoryParent.Ahorro, Type = CategoryType.Investment }
+        };
+        return await Task.FromResult(categories); 
+    }
+
 }

@@ -9,5 +9,7 @@ public class Wallet : Entity
     public string UserId { get; set; }
     public User User { get; set; }
     public Currency Currency { get; set; }
-    public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+    public ICollection<Income> Income { get; set; } = new List<Income>();
+    public ICollection<Expense> Expense { get; set; } = new List<Expense>();
+    public ICollection<Investment> Investment { get; set; } = new List<Investment>();
 }

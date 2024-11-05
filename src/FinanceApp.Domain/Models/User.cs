@@ -10,5 +10,7 @@ public class User : IdentityUser
     public string Locale { get; set; } = "en-EN";
     public ICollection<Category> Categories { get; set; } = new List<Category>();
     public ICollection<Wallet> Wallets { get; set; } = new List<Wallet>();
-    public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+    public ICollection<Income> Income { get; set; } = new List<Income>();
+    public ICollection<Expense> Expense { get; set; } = new List<Expense>();
+    public ICollection<Investment> Investment { get; set; } = new List<Investment>();
 }

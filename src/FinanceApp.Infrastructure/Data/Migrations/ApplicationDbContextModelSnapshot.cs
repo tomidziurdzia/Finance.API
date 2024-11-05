@@ -34,9 +34,6 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp without time zone");
 
@@ -46,8 +43,13 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("ParentType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -60,7 +62,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("FinanceApp.Domain.Models.Transaction", b =>
+            modelBuilder.Entity("FinanceApp.Domain.Models.Expense", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +71,7 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -87,8 +89,50 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("FinanceApp.Domain.Models.Income", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -105,7 +149,52 @@ namespace FinanceApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("WalletId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Incomes");
+                });
+
+            modelBuilder.Entity("FinanceApp.Domain.Models.Investment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("WalletId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WalletId");
+
+                    b.ToTable("Investments");
                 });
 
             modelBuilder.Entity("FinanceApp.Domain.Models.User", b =>
@@ -365,21 +454,76 @@ namespace FinanceApp.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FinanceApp.Domain.Models.Transaction", b =>
+            modelBuilder.Entity("FinanceApp.Domain.Models.Expense", b =>
                 {
                     b.HasOne("FinanceApp.Domain.Models.Category", "Category")
-                        .WithMany("Transactions")
+                        .WithMany("Expenses")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("FinanceApp.Domain.Models.User", "User")
-                        .WithMany("Transactions")
+                        .WithMany("Expense")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FinanceApp.Domain.Models.Wallet", "Wallet")
-                        .WithMany("Transactions")
+                        .WithMany("Expense")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+
+                    b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("FinanceApp.Domain.Models.Income", b =>
+                {
+                    b.HasOne("FinanceApp.Domain.Models.Category", "Category")
+                        .WithMany("Incomes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FinanceApp.Domain.Models.User", "User")
+                        .WithMany("Income")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinanceApp.Domain.Models.Wallet", "Wallet")
+                        .WithMany("Income")
+                        .HasForeignKey("WalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+
+                    b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("FinanceApp.Domain.Models.Investment", b =>
+                {
+                    b.HasOne("FinanceApp.Domain.Models.Category", "Category")
+                        .WithMany("Investments")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FinanceApp.Domain.Models.User", "User")
+                        .WithMany("Investment")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinanceApp.Domain.Models.Wallet", "Wallet")
+                        .WithMany("Investment")
                         .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -455,21 +599,33 @@ namespace FinanceApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("FinanceApp.Domain.Models.Category", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("Expenses");
+
+                    b.Navigation("Incomes");
+
+                    b.Navigation("Investments");
                 });
 
             modelBuilder.Entity("FinanceApp.Domain.Models.User", b =>
                 {
                     b.Navigation("Categories");
 
-                    b.Navigation("Transactions");
+                    b.Navigation("Expense");
+
+                    b.Navigation("Income");
+
+                    b.Navigation("Investment");
 
                     b.Navigation("Wallets");
                 });
 
             modelBuilder.Entity("FinanceApp.Domain.Models.Wallet", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("Expense");
+
+                    b.Navigation("Income");
+
+                    b.Navigation("Investment");
                 });
 #pragma warning restore 612, 618
         }

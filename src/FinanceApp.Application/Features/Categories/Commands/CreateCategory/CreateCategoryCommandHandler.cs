@@ -22,8 +22,8 @@ public class CreateCategoryCommandHandler(
         {
             Id = Guid.NewGuid(),
             Name = request.Name,
-            Description = request.Description,
             UserId = user.Id,
+            ParentType = request.ParentType,
             Type = request.Type
         };
 
@@ -33,8 +33,8 @@ public class CreateCategoryCommandHandler(
         {
             Id = category.Id,
             Name = category.Name,
-            Description = category.Description,
-            Type = category.Type.ToString()
+            ParentType = category.ParentType.ToString(),
+            Type = category.Type.ToString(),
         };
     }
 }

@@ -34,7 +34,7 @@ public class RegisterUserCommandHandler(UserManager<User> userManager, IAuthServ
             var userCategories = defaultCategories.Select(category => new Category
             {
                 Name = category.Name,
-                Description = category.Description,
+                ParentType = category.ParentType,
                 Type = category.Type,
                 UserId = user.Id,
             }).ToList();

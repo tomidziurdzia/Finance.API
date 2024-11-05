@@ -46,13 +46,11 @@ public class InitialData
                         var userCategory = new Category
                         {
                             Name = category.Name,
-                            Description = category.Description,
                             UserId = user.Id // Asigna la categoría al primer usuario
                         };
                         var user2Category = new Category
                         {
                             Name = category.Name,
-                            Description = category.Description,
                             UserId = user2.Id // Asigna la categoría al segundo usuario
                         };
                         await context.Categories!.AddRangeAsync(userCategory, user2Category);

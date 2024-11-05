@@ -22,23 +22,17 @@ public class GetWalletsQueryHandler(
 
         var walletDtos = wallets.Select(wallet => 
         {
-            var total = wallet.Transactions.Sum(t => t.Amount);
-
             return new WalletDto
             {
                 Id = wallet.Id,
                 Name = wallet.Name,
                 Currency = wallet.Currency.ToString(),
-                Total = total
             };
         }).ToList();
-
-        var totalGlobal = walletDtos.Sum(w => w.Total);
 
         return new WalletsDto
         {
             Wallets = walletDtos,
-            Total = totalGlobal
         };
     }
 }
