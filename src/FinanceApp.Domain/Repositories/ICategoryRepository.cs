@@ -11,4 +11,5 @@ public interface ICategoryRepository
     Task Create(Category category, CancellationToken cancellationToken);
     Task Update(Category category, CancellationToken cancellationToken);
     Task Delete(Category category, CancellationToken cancellationToken);
+    Task<Category> GetByName(string userId, string name, CancellationToken cancellationToken);
 }

@@ -31,7 +31,7 @@ public class GetIncomeQueryHandler(
             WalletId = income.WalletId,
             WalletName = income.Wallet.Name,
             CategoryId = income.CategoryId,
-            CategoryName = income.Category?.Name,
+            CategoryName = income.Category.Name,
             UserId = income.UserId,
             Amount = income.Amount,
             Description = income.Description,

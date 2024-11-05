@@ -89,7 +89,22 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
             throw new Exception($"Error deleting category: {ex.Message}");
         }
     }
-    
+
+    public async Task<Category> GetByName(string userId, string name, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var category = await context.Categories!.FirstOrDefaultAsync(c => c.Name == name && c.UserId == userId, cancellationToken);
+            if(category == null) throw new NotFoundException(nameof(Category), name);
+
+            return category;
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException(ex.Message);
+        }
+    }
+
     public async Task<List<Category>> GetDefaultCategoriesAsync()
     {
        var categories = new List<Category>
@@ -142,7 +157,11 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
             new Category { Name = "Planes de pensiones", ParentType = CategoryParent.Inversión, Type = CategoryType.Investment },
 
             new Category { Name = "Otros ahorros", ParentType = CategoryParent.Ahorro, Type = CategoryType.Investment },
-            new Category { Name = "Productos de ahorro", ParentType = CategoryParent.Ahorro, Type = CategoryType.Investment }
+            new Category { Name = "Productos de ahorro", ParentType = CategoryParent.Ahorro, Type = CategoryType.Investment },
+            
+            // Transfer
+            new Category { Name = "Transfer", ParentType = CategoryParent.Transfer, Type = CategoryType.Transfer },
+
         };
         return await Task.FromResult(categories); 
     }

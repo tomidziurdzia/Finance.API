@@ -13,9 +13,9 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
         try
         {
             var wallet = await context.Wallets
-                .Include(w => w.Income)
-                .Include(w => w.Expense)
-                .Include(w => w.Investment)
+                .Include(w => w.Income).ThenInclude(i => i.Category)
+                .Include(w => w.Expense).ThenInclude(i => i.Category)
+                .Include(w => w.Investment).ThenInclude(i => i.Category)
                 .FirstOrDefaultAsync(w => w.Id == id && w.UserId == userId, cancellationToken);
 
             if (wallet == null) throw new NotFoundException(nameof(Wallet), id);
@@ -34,9 +34,9 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
         {
             return await context.Wallets
                 .Where(w => w.UserId == userId)
-                .Include(w => w.Income)
-                .Include(w => w.Expense)
-                .Include(w => w.Investment)
+                .Include(w => w.Income).ThenInclude(i => i.Category)
+                .Include(w => w.Expense).ThenInclude(i => i.Category)
+                .Include(w => w.Investment).ThenInclude(i => i.Category)
                 .ToListAsync(cancellationToken);
         }
         catch (Exception ex)
