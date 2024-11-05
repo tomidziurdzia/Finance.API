@@ -26,44 +26,12 @@ public class GetWalletQueryHandler(
         {
             throw new NotFoundException(nameof(wallet), request.WalletId);
         }
-        
-        var transactions = wallet.Transactions
-            .OrderByDescending(transaction => transaction.CreatedAt)
-            .Select(t => new WalletTransactionsDto
-            {
-                Id = t.Id,
-                CategoryId = t.Category?.Id,
-                CategoryName = t.Category?.Name!,
-                Type = t.Type.ToString(),
-                Amount = t.Amount,
-                Description = t.Description,
-                CreatedAt = t.CreatedAt
-            }).ToList();
-
-        var totalIncome = wallet.Transactions
-            .Where(t => t.Type == TransactionType.Income)
-            .Sum(t => t.Amount);
-
-        var totalExpense = wallet.Transactions
-            .Where(t => t.Type == TransactionType.Expense)
-            .Sum(t => t.Amount);
-        
-        var totalInvestment = wallet.Transactions
-            .Where(t => t.Type == TransactionType.Investment)
-            .Sum(t => t.Amount);
-
-        var total = wallet.Transactions.Sum(t => t.Amount);
 
         return new WalletDto
         {
             Id = wallet.Id,
             Name = wallet.Name,
             Currency = wallet.Currency.ToString(),
-            Transactions = transactions,
-            Total = total,
-            Income = totalIncome,
-            Expense = totalExpense,
-            Investment = -totalInvestment
         };
     }
 }

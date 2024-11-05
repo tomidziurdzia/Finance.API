@@ -39,7 +39,9 @@ namespace FinanceApp.Infrastructure.Data
         
         public DbSet<Category> Categories { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Income> Incomes { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Investment> Investments { get; set; }
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -51,6 +53,14 @@ namespace FinanceApp.Infrastructure.Data
                 .HasForeignKey(c => c.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<Category>()
+                .Property(c => c.ParentType)
+                .HasConversion<string>();
+
+            builder.Entity<Category>()
+                .Property(c => c.Type)
+                .HasConversion<string>();
 
             builder.Entity<Wallet>()
                 .HasOne(w => w.User)
@@ -58,28 +68,76 @@ namespace FinanceApp.Infrastructure.Data
                 .HasForeignKey(u => u.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
-            
-            builder.Entity<Transaction>()
-                .HasOne(t => t.User)
-                .WithMany(u => u.Transactions)
-                .HasForeignKey(t => t.UserId)
+
+            // Configuration Income
+            builder.Entity<Income>()
+                .HasOne(i => i.User)
+                .WithMany(u => u.Income)
+                .HasForeignKey(i => i.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
-            builder.Entity<Transaction>()
-                .HasOne(t => t.Wallet)
-                .WithMany(w => w.Transactions)
-                .HasForeignKey(t => t.WalletId)
+
+            builder.Entity<Income>()
+                .HasOne(i => i.Wallet)
+                .WithMany(w => w.Income)
+                .HasForeignKey(i => i.WalletId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
-            builder.Entity<Transaction>()
-                .HasOne(t => t.Category)
-                .WithMany(c => c.Transactions)
-                .HasForeignKey(t => t.CategoryId)
+
+            builder.Entity<Income>()
+                .HasOne(i => i.Category)
+                .WithMany(c => c.Incomes)
+                .HasForeignKey(i => i.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
-            builder.Entity<Transaction>()
-                .Property(t => t.CreatedAt)
+
+            builder.Entity<Income>()
+                .Property(i => i.CreatedAt)
+                .HasDefaultValue(null);
+
+            // Configuration Expense
+            builder.Entity<Expense>()
+                .HasOne(e => e.User)
+                .WithMany(u => u.Expense)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Expense>()
+                .HasOne(e => e.Wallet)
+                .WithMany(w => w.Expense)
+                .HasForeignKey(e => e.WalletId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Expense>()
+                .HasOne(e => e.Category)
+                .WithMany(c => c.Expenses)
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Expense>()
+                .Property(e => e.CreatedAt)
+                .HasDefaultValue(null);
+
+            // Configuration Investment
+            builder.Entity<Investment>()
+                .HasOne(inv => inv.User)
+                .WithMany(u => u.Investment)
+                .HasForeignKey(inv => inv.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Investment>()
+                .HasOne(inv => inv.Wallet)
+                .WithMany(w => w.Investment)
+                .HasForeignKey(inv => inv.WalletId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Investment>()
+                .HasOne(inv => inv.Category)
+                .WithMany(c => c.Investments)
+                .HasForeignKey(inv => inv.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Investment>()
+                .Property(inv => inv.CreatedAt)
                 .HasDefaultValue(null);
         }
+
     }
 }

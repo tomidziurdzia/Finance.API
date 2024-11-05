@@ -12,6 +12,9 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
 
         RuleFor(x => x.Description)
             .MaximumLength(250).WithMessage("Description must not exceed 250 characters");
+        
+        RuleFor(x => x.ParentType)
+            .IsInEnum().WithMessage("Invalid category parent");
 
         RuleFor(x => x.Type)
             .IsInEnum().WithMessage("Invalid category type");

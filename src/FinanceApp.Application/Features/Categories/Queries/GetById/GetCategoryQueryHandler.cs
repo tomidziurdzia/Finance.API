@@ -24,8 +24,8 @@ public class GetCategoryQueryHandler(ICategoryRepository repository, IAuthServic
         {
             Id = category.Id,
             Name = category.Name,
+            ParentType = category.ParentType.ToString(),
             Type = category.Type.ToString(),
-            Description = category.Description,
         };
     }
 }

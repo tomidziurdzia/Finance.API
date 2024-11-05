@@ -9,5 +9,6 @@ public class UpdateCategoryCommand : ICommand<CategoryDto>
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
+    public CategoryParent ParentType { get; set; }
     public CategoryType Type { get; set; }
 }

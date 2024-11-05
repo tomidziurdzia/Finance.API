@@ -12,11 +12,13 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
     {
         try
         {
-            var wallet = await context.Wallets!
-                .Include(w => w.Transactions)
-                .ThenInclude(t => t.Category)
-                .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
-            if(wallet == null) throw new NotFoundException(nameof(Wallet), id);
+            var wallet = await context.Wallets
+                .Include(w => w.Income)
+                .Include(w => w.Expense)
+                .Include(w => w.Investment)
+                .FirstOrDefaultAsync(w => w.Id == id && w.UserId == userId, cancellationToken);
+
+            if (wallet == null) throw new NotFoundException(nameof(Wallet), id);
 
             return wallet;
         }
@@ -30,9 +32,11 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
     {
         try
         {
-            return await context.Wallets!
-                .Where(t => t.UserId == userId)
-                .Include(w => w.Transactions)
+            return await context.Wallets
+                .Where(w => w.UserId == userId)
+                .Include(w => w.Income)
+                .Include(w => w.Expense)
+                .Include(w => w.Investment)
                 .ToListAsync(cancellationToken);
         }
         catch (Exception ex)
@@ -45,7 +49,7 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
     {
         try
         {
-            await context.Wallets!.AddAsync(wallet, cancellationToken);
+            await context.Wallets.AddAsync(wallet, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
@@ -58,7 +62,7 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
     {
         try
         {
-            context.Wallets!.Update(wallet);
+            context.Wallets.Update(wallet);
             await context.SaveChangesAsync(cancellationToken);
         }
         catch (Exception ex)
@@ -71,7 +75,7 @@ public class WalletRepository(ApplicationDbContext context) : IWalletRepository
     {
         try
         {
-            context.Wallets!.Remove(wallet);
+            context.Wallets.Remove(wallet);
 
             await context.SaveChangesAsync(cancellationToken);
         }
