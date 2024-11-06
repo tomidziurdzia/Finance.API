@@ -6,6 +6,7 @@ using FinanceApp.Application.Features.Incomes.Commands.UpdateIncome;
 using FinanceApp.Application.Features.Incomes.Queries.GetAll;
 using FinanceApp.Application.Features.Incomes.Queries.Get;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.WebApi.Endpoints;
 
@@ -28,9 +29,16 @@ public class IncomeEndpoint : ICarterModule
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .RequireAuthorization();
 
-        incomeGroup.MapGet("/", async (IMediator mediator) =>
+        incomeGroup.MapGet("/", async ([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] Guid[]? categoryIds, [FromServices] IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetIncomesQuery());
+                var query = new GetIncomesQuery
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    CategoryIds = categoryIds?.ToList()
+                };
+
+                var result = await mediator.Send(query);
                 return Results.Ok(result);
             })
             .WithTags(OpenApiTag)
@@ -38,6 +46,8 @@ public class IncomeEndpoint : ICarterModule
             .Produces<List<IncomeDto>>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .RequireAuthorization();
+
+
 
         incomeGroup.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {

@@ -18,8 +18,13 @@ public class GetIncomesQueryHandler(
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
-        var incomes = await incomeRepository.GetAll(user.Id, cancellationToken);
-        
+        var incomes = await incomeRepository.GetAll(
+            user.Id,
+            request.StartDate,
+            request.EndDate,
+            request.CategoryIds,
+            cancellationToken);
+
         return incomes
             .OrderByDescending(income => income.CreatedAt)
             .Select(income => new IncomeDto
@@ -35,4 +40,5 @@ public class GetIncomesQueryHandler(
                 Date = income.CreatedAt
             }).ToList();
     }
+
 }

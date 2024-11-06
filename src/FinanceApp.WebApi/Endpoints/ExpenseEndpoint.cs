@@ -6,6 +6,7 @@ using FinanceApp.Application.Features.Expenses.Commands.UpdateExpense;
 using FinanceApp.Application.Features.Expenses.Queries.GetAll;
 using FinanceApp.Application.Features.Expenses.Queries.Get;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.WebApi.Endpoints;
 
@@ -28,9 +29,16 @@ public class ExpenseEndpoint : ICarterModule
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .RequireAuthorization();
 
-        expenseGroup.MapGet("/", async (IMediator mediator) =>
+        expenseGroup.MapGet("/", async ([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] Guid[]? categoryIds, [FromServices] IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetExpensesQuery());
+                var query = new GetExpensesQuery()
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    CategoryIds = categoryIds?.ToList()
+                };
+
+                var result = await mediator.Send(query);
                 return Results.Ok(result);
             })
             .WithTags(OpenApiTag)

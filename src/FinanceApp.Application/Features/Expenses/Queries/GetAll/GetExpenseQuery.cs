@@ -5,4 +5,7 @@ namespace FinanceApp.Application.Features.Expenses.Queries.GetAll;
 
 public class GetExpensesQuery : IQuery<List<ExpenseDto>>
 {
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public List<Guid>? CategoryIds { get; set; }
 }
