@@ -23,15 +23,37 @@ public class IncomeRepository(ApplicationDbContext context) : IIncomeRepository
         }
     }
 
-    public async Task<List<Income>> GetAll(string userId, CancellationToken cancellationToken)
+    public async Task<List<Income>> GetAll(
+        string userId,
+        DateTime? startDate,
+        DateTime? endDate,
+        List<Guid>? categoryIds,
+        CancellationToken cancellationToken)
     {
         try
         {
-            return await context.Incomes
+            var query = context.Incomes
                 .Include(t => t.Wallet)
                 .Include(t => t.Category)
-                .Where(i => i.UserId == userId)
-                .ToListAsync(cancellationToken);
+                .Where(i => i.UserId == userId);
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(i => i.CreatedAt >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                var adjustedEndDate = endDate.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(e => e.CreatedAt <= adjustedEndDate);
+            }
+
+            if (categoryIds != null && categoryIds.Any())
+            {
+                query = query.Where(i => categoryIds.Contains(i.CategoryId));
+            }
+
+            return await query.ToListAsync(cancellationToken);
         }
         catch (Exception ex)
         {

@@ -18,7 +18,11 @@ public class GetInvestmentsQueryHandler(
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
-        var investments = await investmentRepository.GetAll(user.Id, cancellationToken);
+        var investments = await investmentRepository.GetAll(user.Id,
+            request.StartDate,
+            request.EndDate,
+            request.CategoryIds,
+            cancellationToken);
         
         return investments
             .OrderByDescending(investment => investment.CreatedAt)

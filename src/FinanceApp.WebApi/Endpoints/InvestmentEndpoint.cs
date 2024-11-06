@@ -6,6 +6,7 @@ using FinanceApp.Application.Features.Investments.Commands.UpdateInvestment;
 using FinanceApp.Application.Features.Investments.Queries.GetAll;
 using FinanceApp.Application.Features.Investments.Queries.Get;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApp.WebApi.Endpoints;
 
@@ -28,9 +29,16 @@ public class InvestmentEndpoint : ICarterModule
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .RequireAuthorization();
 
-        investmentGroup.MapGet("/", async (IMediator mediator) =>
+        investmentGroup.MapGet("/", async ([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] Guid[]? categoryIds, [FromServices] IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetInvestmentsQuery());
+                var query = new GetInvestmentsQuery()
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    CategoryIds = categoryIds?.ToList()
+                };
+
+                var result = await mediator.Send(query);
                 return Results.Ok(result);
             })
             .WithTags(OpenApiTag)

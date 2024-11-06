@@ -18,8 +18,13 @@ public class GetExpensesQueryHandler(
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
-        var expenses = await expenseRepository.GetAll(user.Id, cancellationToken);
-        
+        var expenses = await expenseRepository.GetAll(
+            user.Id,
+            request.StartDate,
+            request.EndDate,
+            request.CategoryIds,
+            cancellationToken);
+
         return expenses
             .OrderByDescending(expense => expense.CreatedAt)
             .Select(expense => new ExpenseDto
