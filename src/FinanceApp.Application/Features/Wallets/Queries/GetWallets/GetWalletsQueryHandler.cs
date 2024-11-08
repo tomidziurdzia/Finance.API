@@ -22,15 +22,15 @@ public class GetWalletsQueryHandler(
         var wallets = await walletRepository.GetAll(user.Id, cancellationToken);
 
         var walletDtos = wallets.Select(wallet => 
-    {
-        return new SimpleWalletDto
         {
-            Id = wallet.Id,
-            Name = wallet.Name,
-            Currency = wallet.Currency.ToString(),
-        };
-    }).ToList();
-
+            return new SimpleWalletDto
+            {
+                Id = wallet.Id,
+                Name = wallet.Name,
+                Currency = wallet.Currency.ToString(),
+            };
+        }).ToList();
+        
         return new WalletsDto
         {
             Wallets = walletDtos,
