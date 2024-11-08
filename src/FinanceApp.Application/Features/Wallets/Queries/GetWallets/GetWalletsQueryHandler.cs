@@ -1,6 +1,5 @@
 using FinanceApp.Application.Contracts.Identity;
 using FinanceApp.Application.CQRS;
-using FinanceApp.Application.DTOs.Transaction;
 using FinanceApp.Application.DTOs.Wallet;
 using FinanceApp.Domain.Models;
 using FinanceApp.Domain.Repositories;
