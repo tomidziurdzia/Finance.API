@@ -6,4 +6,5 @@ public class WalletDto
     public string Name { get; set; }
     public string Currency { get; set; }
     public List<TransactionWalletDto> Transactions { get; set; } = new List<TransactionWalletDto>();
+    public decimal TotalBalance { get; set; }
 }
