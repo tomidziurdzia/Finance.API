@@ -36,6 +36,16 @@ public class CreateInvestmentCommandHandler(
                 throw new NotFoundException(nameof(Category), request.CategoryId.Value);
             }
         }
+        
+        var totalIncome = wallet.Income.Sum(income => income.Amount);
+        var totalExpense = wallet.Expense.Sum(expense => expense.Amount);
+        var totalInvestment = wallet.Investment.Sum(investment => investment.Amount);
+        var totalBalance = totalIncome - totalExpense - totalInvestment;
+
+        if (totalBalance < request.Amount)
+        {
+            throw new InvalidOperationException("Insufficient balance to create this investment.");
+        }
 
         var investment = new Investment
         {

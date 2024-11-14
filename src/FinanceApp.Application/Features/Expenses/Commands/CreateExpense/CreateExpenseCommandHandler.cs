@@ -32,6 +32,16 @@ public class CreateExpenseCommandHandler(
         {
             throw new NotFoundException(nameof(category), request.CategoryId);
         }
+        
+        var totalIncome = wallet.Income.Sum(income => income.Amount);
+        var totalExpense = wallet.Expense.Sum(expense => expense.Amount);
+        var totalInvestment = wallet.Investment.Sum(investment => investment.Amount);
+        var totalBalance = totalIncome - totalExpense - totalInvestment;
+
+        if (totalBalance < request.Amount)
+        {
+            throw new InvalidOperationException("Insufficient balance to create this expense.");
+        }
 
         var expense = new Expense
         {

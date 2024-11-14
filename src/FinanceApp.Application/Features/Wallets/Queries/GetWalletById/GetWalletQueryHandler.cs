@@ -26,12 +26,18 @@ public class GetWalletQueryHandler(
         {
             throw new NotFoundException(nameof(wallet), request.WalletId);
         }
+        
+        var totalIncome = wallet.Income.Sum(income => income.Amount);
+        var totalExpense = wallet.Expense.Sum(expense => expense.Amount);
+        var totalInvestment = wallet.Investment.Sum(investment => investment.Amount);
+        var totalBalance = totalIncome - totalExpense - totalInvestment;
 
         return new WalletDto
         {
             Id = wallet.Id,
             Name = wallet.Name,
             Currency = wallet.Currency.ToString(),
+            TotalBalance = totalBalance,
             Transactions = wallet.Income
                 .Select(income => new TransactionWalletDto
                 {
