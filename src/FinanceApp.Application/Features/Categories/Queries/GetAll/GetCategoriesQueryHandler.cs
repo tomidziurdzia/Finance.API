@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FinanceApp.Application.Features.Categories.Queries.GetAll;
 
-public class GetCategoriesQueryHandler(ICategoryRepository repository, IAuthService authService, UserManager<User> userManager) : IQueryHandler<GetCategoriesQuery, List<CategoryDto>>
+public class GetCategoriesQueryHandler(ICategoryRepository repository, IIncomeRepository incomeRepository, IInvestmentRepository investmentRepository, IExpenseRepository expenseRepository, IAuthService authService, UserManager<User> userManager) : IQueryHandler<GetCategoriesQuery, List<CategoryDto>>
 {
     public async Task<List<CategoryDto>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
@@ -15,13 +15,60 @@ public class GetCategoriesQueryHandler(ICategoryRepository repository, IAuthServ
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
 
         var categories = await repository.GetAll(user.Id ,cancellationToken);
+        
+        var incomes = await incomeRepository.GetAll(
+            user.Id,
+            request.StartDate,
+            request.EndDate,
+            request.CategoryIds,
+            cancellationToken);
 
-        return categories.Select(category => new CategoryDto
+        var investments = await investmentRepository.GetAll(
+            user.Id,
+            request.StartDate,
+            request.EndDate,
+            request.CategoryIds,
+            cancellationToken);
+
+        var expenses = await expenseRepository.GetAll(
+            user.Id,
+            request.StartDate,
+            request.EndDate,
+            request.CategoryIds,
+            cancellationToken);
+
+        var categoryDtos = await Task.WhenAll(categories.Select(async category =>
         {
-            Id = category.Id,
-            Name = category.Name,
-            ParentType = category.ParentType.ToString(),
-            Type = category.Type.ToString(),
-        }).ToList();
+            decimal total = 0;
+            if (category.Type.ToString() == "Income")
+            {
+                total = incomes
+                    .Where(income => income.CategoryId == category.Id)
+                    .Sum(income => income.Amount);
+            }
+            else if (category.Type.ToString() == "Investment")
+            {
+                total = investments
+                    .Where(investment => investment.CategoryId == category.Id)
+                    .Sum(investment => investment.Amount);
+            }
+            else if (category.Type.ToString() == "Expense")
+            {
+                total = expenses
+                    .Where(expense => expense.CategoryId == category.Id)
+                    .Sum(expense => expense.Amount);
+            }
+
+            return new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                ParentType = category.ParentType.ToString(),
+                Type = category.Type.ToString(),
+                Total = total
+            };
+        }));
+
+        return categoryDtos.ToList();
     }
 }
