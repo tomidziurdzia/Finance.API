@@ -69,6 +69,9 @@ public class GetCategoriesQueryHandler(ICategoryRepository repository, IIncomeRe
             };
         }));
 
-        return categoryDtos.ToList();
+        return categoryDtos
+            .OrderByDescending(dto => dto.Total)
+            .ThenBy(dto => dto.Name)
+            .ToList();
     }
 }
