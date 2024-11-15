@@ -7,4 +7,5 @@ public class CategoryDto
     public string Name { get; set; }
     public string ParentType { get; set; }
     public string Type { get; set; }
+    public decimal Total { get; set; }
 }

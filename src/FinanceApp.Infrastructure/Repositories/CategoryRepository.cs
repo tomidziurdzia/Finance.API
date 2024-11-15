@@ -26,7 +26,7 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
     {
         try
         {
-            var category = await context.Categories!.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
+            var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId, cancellationToken);
             if(category == null) throw new NotFoundException(nameof(Category), id);
 
             return category;
@@ -40,7 +40,11 @@ public class CategoryRepository(ApplicationDbContext context) : ICategoryReposit
     {
         try
         {
-            var categories = context.Categories!.Where(u => u.User!.Id == userId);
+            var categories = context.Categories
+                .Include(i => i.Incomes)
+                .Include(i => i.Investments)
+                .Include(i => i.Expenses)
+                .Where(u => u.User.Id == userId);
 
             return await categories.ToListAsync(cancellationToken);
         }
