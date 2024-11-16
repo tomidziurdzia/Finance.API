@@ -2,6 +2,7 @@ using FinanceApp.Application.Contracts.Identity;
 using FinanceApp.Application.CQRS;
 using FinanceApp.Application.DTOs.Category;
 using FinanceApp.Domain.Models;
+using FinanceApp.Domain.Models.Enums;
 using FinanceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -63,7 +64,7 @@ public class GetCategoriesQueryHandler(ICategoryRepository repository, IIncomeRe
             {
                 Id = category.Id,
                 Name = category.Name,
-                ParentType = category.ParentType.ToString(),
+                ParentType = category.ParentType.ToFriendlyString().ToString(),
                 Type = category.Type.ToString(),
                 Total = total
             };
