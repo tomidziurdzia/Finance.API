@@ -4,8 +4,10 @@ namespace FinanceApp.Domain.Models;
 
 public class Income : Entity
 {
-    public Guid WalletId { get; set; }
+    public Guid? WalletId { get; set; }
     public Wallet Wallet { get; set; }
+    public Guid? InvestmentAccountId { get; set; }
+    public InvestmentAccount InvestmentAccount { get; set; }
     public Guid CategoryId { get; set; }
     public Category Category { get; set; }
     public string UserId { get; set; }

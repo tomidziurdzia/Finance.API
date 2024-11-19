@@ -35,8 +35,7 @@ public class CreateExpenseCommandHandler(
         
         var totalIncome = wallet.Income.Sum(income => income.Amount);
         var totalExpense = wallet.Expense.Sum(expense => expense.Amount);
-        var totalInvestment = wallet.Investment.Sum(investment => investment.Amount);
-        var totalBalance = totalIncome - totalExpense - totalInvestment;
+        var totalBalance = totalIncome - totalExpense;
 
         if (totalBalance < request.Amount)
         {

@@ -3,7 +3,7 @@ namespace FinanceApp.Application.DTOs.Transaction;
 public class TransactionBaseDto
 {
     public Guid Id { get; set; }
-    public Guid WalletId { get; set; }
+    public Guid? WalletId { get; set; }
     public string WalletName { get; set; }
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; }

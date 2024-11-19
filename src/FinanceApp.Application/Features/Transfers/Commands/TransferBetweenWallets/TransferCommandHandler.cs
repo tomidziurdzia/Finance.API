@@ -6,7 +6,7 @@ using FinanceApp.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace FinanceApp.Application.Features.Transfers.Commands;
+namespace FinanceApp.Application.Features.Transfers.Commands.TransferBetweenWallets;
 
 public class TransferCommandHandler(
     IWalletRepository walletRepository,
@@ -32,8 +32,7 @@ public class TransferCommandHandler(
         
         var totalIncome = sourceWallet.Income.Sum(income => income.Amount);
         var totalExpense = sourceWallet.Expense.Sum(expense => expense.Amount);
-        var totalInvestment = sourceWallet.Investment.Sum(investment => investment.Amount);
-        var balance = totalIncome - (totalExpense + totalInvestment);
+        var balance = totalIncome - totalExpense;
 
         if (balance < request.Amount)
         {

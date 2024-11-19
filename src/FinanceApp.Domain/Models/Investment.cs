@@ -12,4 +12,6 @@ public class Investment : Entity
     public User User { get; set; }
     public decimal Amount { get; set; }
     public string? Description { get; set; }
+    public Guid InvestmentAccountId { get; set; }
+    public InvestmentAccount InvestmentAccount { get; set; }
 }

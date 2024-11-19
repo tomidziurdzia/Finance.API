@@ -29,8 +29,7 @@ public class GetWalletQueryHandler(
         
         var totalIncome = wallet.Income.Sum(income => income.Amount);
         var totalExpense = wallet.Expense.Sum(expense => expense.Amount);
-        var totalInvestment = wallet.Investment.Sum(investment => investment.Amount);
-        var totalBalance = totalIncome - totalExpense - totalInvestment;
+        var totalBalance = totalIncome - totalExpense;
 
         return new WalletDto
         {
@@ -58,16 +57,6 @@ public class GetWalletQueryHandler(
                     Description = expense.Description,
                     Date = expense.CreatedAt,
                     Type = "Expense"
-                }))
-                .Concat(wallet.Investment.Select(investment => new TransactionWalletDto
-                {
-                    Id = investment.Id,
-                    CategoryId = investment.CategoryId,
-                    CategoryName = investment.Category.Name,
-                    Amount = investment.Amount,
-                    Description = investment.Description,
-                    Date = investment.CreatedAt,
-                    Type = "Investment"
                 }))
                 .OrderByDescending(t => t.Date)
                 .ToList()
