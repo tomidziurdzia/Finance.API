@@ -13,6 +13,7 @@ public class ExpenseRepository(ApplicationDbContext context) : IExpenseRepositor
         try
         {
             return await context.Expenses
+                .Include(t => t.InvestmentAccount)
                 .Include(t => t.Wallet)
                 .Include(t => t.Category)
                 .FirstOrDefaultAsync(i => i.UserId == userId && i.Id == id, cancellationToken);
@@ -33,6 +34,7 @@ public class ExpenseRepository(ApplicationDbContext context) : IExpenseRepositor
         try
         {
             var query = context.Expenses
+                .Include(t => t.InvestmentAccount)
                 .Include(t => t.Wallet)
                 .Include(t => t.Category)
                 .Where(e => e.UserId == userId);

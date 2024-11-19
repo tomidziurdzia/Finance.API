@@ -5,6 +5,8 @@ public class TransactionBaseDto
     public Guid Id { get; set; }
     public Guid? WalletId { get; set; }
     public string WalletName { get; set; }
+    public Guid? InvestmentAccountId { get; set; }
+    public string InvestmentAccountName { get; set; }
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; }
     public string UserId { get; set; }

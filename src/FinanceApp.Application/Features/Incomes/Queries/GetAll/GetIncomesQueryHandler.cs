@@ -31,13 +31,15 @@ public class GetIncomesQueryHandler(
             {
                 Id = income.Id,
                 WalletId = income.WalletId,
-                WalletName = income.Wallet.Name,
+                WalletName = income.Wallet?.Name,
+                InvestmentAccountId = income.InvestmentAccountId,
+                InvestmentAccountName = income.InvestmentAccount?.Name,
                 CategoryId = income.CategoryId,
                 CategoryName = income.Category.Name,
                 UserId = income.UserId,
                 Amount = income.Amount,
                 Description = income.Description,
-                Date = income.CreatedAt
+                Date = income.CreatedAt,
             }).ToList();
     }
 
