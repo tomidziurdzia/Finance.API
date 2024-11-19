@@ -13,4 +13,5 @@ public class User : IdentityUser
     public ICollection<Income> Income { get; set; } = new List<Income>();
     public ICollection<Expense> Expense { get; set; } = new List<Expense>();
     public ICollection<Investment> Investment { get; set; } = new List<Investment>();
+    public ICollection<InvestmentAccount> InvestmentAccounts { get; set; } = new List<InvestmentAccount>();
 }

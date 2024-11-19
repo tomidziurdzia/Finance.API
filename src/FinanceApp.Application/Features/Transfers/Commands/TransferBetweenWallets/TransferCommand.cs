@@ -1,6 +1,6 @@
 using FinanceApp.Application.CQRS;
 
-namespace FinanceApp.Application.Features.Transfers.Commands;
+namespace FinanceApp.Application.Features.Transfers.Commands.TransferBetweenWallets;
 
 public class TransferCommand() : ICommand
 {
