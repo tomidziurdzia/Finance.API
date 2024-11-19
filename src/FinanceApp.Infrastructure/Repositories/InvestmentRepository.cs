@@ -13,6 +13,7 @@ public class InvestmentRepository(ApplicationDbContext context) : IInvestmentRep
         try
         {
             return await context.Investments
+                .Include(t => t.InvestmentAccount)
                 .Include(t => t.Wallet)
                 .Include(t => t.Category)
                 .FirstOrDefaultAsync(i => i.UserId == userId && i.Id == id, cancellationToken);
@@ -33,6 +34,7 @@ public class InvestmentRepository(ApplicationDbContext context) : IInvestmentRep
         try
         {
             var query = context.Investments
+                .Include(t => t.InvestmentAccount)
                 .Include(t => t.Wallet)
                 .Include(t => t.Category)
                 .Where(i => i.UserId == userId);
