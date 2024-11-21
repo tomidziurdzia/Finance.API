@@ -24,9 +24,12 @@ public class GetIncomesQueryHandler(
             request.EndDate,
             request.CategoryIds,
             cancellationToken);
+        
+        var filteredIncomes = incomes
+            .Where(income => income.Category.Name != "Transfer")
+            .OrderByDescending(income => income.CreatedAt);
 
-        var incomeDtos = incomes
-            .OrderByDescending(income => income.CreatedAt)
+        var incomeDtos = filteredIncomes
             .Select(income => new IncomeDto
             {
                 Id = income.Id,
@@ -41,7 +44,7 @@ public class GetIncomesQueryHandler(
                 Description = income.Description,
                 Date = income.CreatedAt,
             }).ToList();
-
+        
         var total = incomeDtos
             .Where(income => income.CategoryName != "Transfer")
             .Sum(income => income.Amount);

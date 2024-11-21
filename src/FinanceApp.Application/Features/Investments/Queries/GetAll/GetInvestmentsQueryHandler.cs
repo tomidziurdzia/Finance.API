@@ -25,8 +25,11 @@ public class GetInvestmentsQueryHandler(
             request.CategoryIds,
             cancellationToken);
 
-        var investmentDtos = investments
-            .OrderByDescending(investment => investment.CreatedAt)
+        var filteredInvestments = investments
+            .Where(investment => investment.Category.Name != "Transfer")
+            .OrderByDescending(investment => investment.CreatedAt);
+
+        var investmentDtos = filteredInvestments
             .Select(investment => new InvestmentDto
             {
                 Id = investment.Id,
@@ -41,6 +44,7 @@ public class GetInvestmentsQueryHandler(
                 Description = investment.Description,
                 Date = investment.CreatedAt
             }).ToList();
+
 
         var total = investmentDtos
             .Where(investment => investment.CategoryName != "Transfer")

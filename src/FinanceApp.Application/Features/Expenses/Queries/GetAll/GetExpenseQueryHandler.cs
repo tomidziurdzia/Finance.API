@@ -25,8 +25,11 @@ public class GetExpensesQueryHandler(
             request.CategoryIds,
             cancellationToken);
 
-        var expenseDtos = expenses
-            .OrderByDescending(expense => expense.CreatedAt)
+        var filteredExpenses = expenses
+            .Where(expense => expense.Category.Name != "Transfer")
+            .OrderByDescending(expense => expense.CreatedAt);
+
+        var expenseDtos = filteredExpenses
             .Select(expense => new ExpenseDto
             {
                 Id = expense.Id,
