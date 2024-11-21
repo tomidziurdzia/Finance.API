@@ -11,9 +11,9 @@ public class GetExpensesQueryHandler(
     IExpenseRepository expenseRepository,
     UserManager<User> userManager,
     IAuthService authService)
-    : IQueryHandler<GetExpensesQuery, List<ExpenseDto>>
+    : IQueryHandler<GetExpensesQuery, ExpensesDto>
 {
-    public async Task<List<ExpenseDto>> Handle(GetExpensesQuery request, CancellationToken cancellationToken)
+    public async Task<ExpensesDto> Handle(GetExpensesQuery request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
@@ -25,7 +25,7 @@ public class GetExpensesQueryHandler(
             request.CategoryIds,
             cancellationToken);
 
-        return expenses
+        var expenseDtos = expenses
             .OrderByDescending(expense => expense.CreatedAt)
             .Select(expense => new ExpenseDto
             {
@@ -41,5 +41,15 @@ public class GetExpensesQueryHandler(
                 Description = expense.Description,
                 Date = expense.CreatedAt
             }).ToList();
+
+        var total = expenseDtos
+            .Where(expense => expense.CategoryName != "Transfer")
+            .Sum(expense => expense.Amount);
+
+        return new ExpensesDto
+        {
+            Data = expenseDtos,
+            Total = total
+        };
     }
 }
