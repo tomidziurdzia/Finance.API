@@ -11,9 +11,9 @@ public class GetIncomesQueryHandler(
     IIncomeRepository incomeRepository,
     UserManager<User> userManager,
     IAuthService authService)
-    : IQueryHandler<GetIncomesQuery, List<IncomeDto>>
+    : IQueryHandler<GetIncomesQuery, IncomesDto>
 {
-    public async Task<List<IncomeDto>> Handle(GetIncomesQuery request, CancellationToken cancellationToken)
+    public async Task<IncomesDto> Handle(GetIncomesQuery request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
@@ -25,7 +25,7 @@ public class GetIncomesQueryHandler(
             request.CategoryIds,
             cancellationToken);
 
-        return incomes
+        var incomeDtos = incomes
             .OrderByDescending(income => income.CreatedAt)
             .Select(income => new IncomeDto
             {
@@ -41,6 +41,16 @@ public class GetIncomesQueryHandler(
                 Description = income.Description,
                 Date = income.CreatedAt,
             }).ToList();
+
+        var total = incomeDtos
+            .Where(income => income.CategoryName != "Transfer")
+            .Sum(income => income.Amount);
+
+        return new IncomesDto
+        {
+            Data = incomeDtos,
+            Total = total
+        };
     }
 
 }

@@ -3,7 +3,7 @@ using FinanceApp.Application.DTOs.Expense;
 
 namespace FinanceApp.Application.Features.Expenses.Queries.GetAll;
 
-public class GetExpensesQuery : IQuery<List<ExpenseDto>>
+public class GetExpensesQuery : IQuery<ExpensesDto>
 {
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }

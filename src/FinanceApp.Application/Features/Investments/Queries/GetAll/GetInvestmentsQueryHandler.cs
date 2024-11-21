@@ -11,20 +11,21 @@ public class GetInvestmentsQueryHandler(
     IInvestmentRepository investmentRepository,
     UserManager<User> userManager,
     IAuthService authService)
-    : IQueryHandler<GetInvestmentsQuery, List<InvestmentDto>>
+    : IQueryHandler<GetInvestmentsQuery, InvestmentsDto>
 {
-    public async Task<List<InvestmentDto>> Handle(GetInvestmentsQuery request, CancellationToken cancellationToken)
+    public async Task<InvestmentsDto> Handle(GetInvestmentsQuery request, CancellationToken cancellationToken)
     {
         var user = await userManager.FindByNameAsync(authService.GetSessionUser());
         if (user == null) throw new UnauthorizedAccessException("User not authenticated");
-
-        var investments = await investmentRepository.GetAll(user.Id,
+        
+        var investments = await investmentRepository.GetAll(
+            user.Id,
             request.StartDate,
             request.EndDate,
             request.CategoryIds,
             cancellationToken);
-        
-        return investments
+
+        var investmentDtos = investments
             .OrderByDescending(investment => investment.CreatedAt)
             .Select(investment => new InvestmentDto
             {
@@ -40,5 +41,15 @@ public class GetInvestmentsQueryHandler(
                 Description = investment.Description,
                 Date = investment.CreatedAt
             }).ToList();
+
+        var total = investmentDtos
+            .Where(investment => investment.CategoryName != "Transfer")
+            .Sum(investment => investment.Amount);
+
+        return new InvestmentsDto
+        {
+            Data = investmentDtos,
+            Total = total
+        };
     }
 }
