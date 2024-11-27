@@ -37,7 +37,7 @@ public class GetWalletQueryHandler(
             Name = wallet.Name,
             Currency = wallet.Currency.ToString(),
             TotalBalance = totalBalance,
-            Transactions = wallet.Income
+            Data = wallet.Income
                 .Select(income => new TransactionWalletDto
                 {
                     Id = income.Id,
